@@ -1,0 +1,16 @@
+.container {
+  background-color: #f8f8f8;
+  padding: 12px 12px 20px 12px;
+}
+.sidemenu {
+  width: 400px;
+}
+.sidemenuLink {
+  padding: 15px 0px 15px 20px;
+}
+
+@media (max-width: 640px) {
+  .sidemenu {
+    width: 220px;
+  }
+}

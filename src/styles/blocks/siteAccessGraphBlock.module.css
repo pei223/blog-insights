@@ -1,0 +1,41 @@
+.graph {
+  width: 100% !important;
+  height: 100% !important;
+  padding-bottom: 80px;
+}
+
+.heading {
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+}
+
+.heading p {
+  margin: 0 0 10px 0;
+}
+
+.noDiff,
+.minusDiff,
+.plusDiff {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.noDiff {
+  color: black;
+}
+
+.minusDiff {
+  color: #3f51b5;
+}
+
+.plusDiff {
+  color: #f4511e;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: #797979;
+}

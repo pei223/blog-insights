@@ -1,0 +1,34 @@
+.statsGraphArea {
+  width: 100%;
+}
+
+.rankingArea {
+  width: 100%;
+}
+
+.accessGraphArea {
+  height: 48vh;
+  margin-bottom: 10px;
+}
+
+.postAccessRankingArea {
+  height: 40vh;
+}
+
+.keywordRankingArea {
+  height: 40vh;
+}
+
+@media (max-height: 960px) {
+  .accessGraphArea {
+    height: 55vh;
+  }
+
+  .postAccessRankingArea {
+    height: 60vh;
+  }
+
+  .keywordRankingArea {
+    height: 60vh;
+  }
+}

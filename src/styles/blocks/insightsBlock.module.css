@@ -1,0 +1,41 @@
+.heading {
+  font-size: 1.15rem;
+  padding-bottom: 20px;
+}
+
+.loadingContainer {
+  position: absolute;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+}
+
+@keyframes anim {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100%;
+  }
+}
+.list {
+  height: 100%;
+  overflow-y: scroll;
+  animation: anim 0.8s ease 1 forwards;
+  margin-bottom: 10px;
+}
+
+.cardContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.seeMoreArea {
+  text-align: right;
+  padding-bottom: 32px;
+}
+
+.seeMoreArea button {
+  color: #579afb;
+}

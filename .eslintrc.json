@@ -1,0 +1,44 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "prettier", "import", "unused-imports"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "sort-imports": 0,
+    "import/order": [2, { "alphabetize": { "order": "asc" } }],
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "prettier/prettier": "error",
+    // requireは許容
+    "@typescript-eslint/no-var-requires": "off",
+    // anyは許容
+    "@typescript-eslint/no-explicit-any": "off",
+
+    // 命名規則
+    "@typescript-eslint/naming-convention": [
+      "error",
+      // 基本キャメルケース
+      { "selector": "memberLike", "format": ["camelCase"] },
+      { "selector": "property", "format": ["camelCase"] },
+      // Enumはパスカルケース
+      { "selector": "enumMember", "format": ["PascalCase"] }
+    ],
+    // 戻り値がvoidの場合は省略許容
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  }
+}

@@ -1,0 +1,21 @@
+.loadingContainer {
+  position: absolute;
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
+}
+
+.content {
+  padding: 0px 50px;
+}
+
+.scrollTopButton {
+  position: fixed !important;
+  bottom: 30px;
+  right: 30px;
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 0;
+  }
+}

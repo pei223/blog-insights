@@ -1,0 +1,32 @@
+.number {
+  font-size: 1.2rem;
+}
+
+.label {
+  margin-left: 2px;
+  font-size: 0.8rem;
+  color: #797979;
+}
+
+.textArea {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 8px;
+  overflow: hidden;
+  color: #666666;
+}
+
+.rank {
+  color: #666666;
+  font-size: 1.2em;
+  width: 2.2em;
+}
+
+.title {
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
