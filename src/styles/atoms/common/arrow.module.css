@@ -1,0 +1,4 @@
+.arrow {
+  display: inline-block;
+  transform: rotate(45deg);
+}

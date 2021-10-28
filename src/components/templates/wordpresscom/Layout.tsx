@@ -47,7 +47,7 @@ const Layout = ({ children, title, heading }: Props) => {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <IconButton
               size="large"

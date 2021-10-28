@@ -20,20 +20,29 @@ import commonStyles from '../../../../styles/templates/wordpresscom/seeMore.modu
 import { scrollToTop } from '../../../../utils/windowUtil'
 import ScrollTopButton from '../../../atoms/common/ScrollTopButton'
 import KeywordInfoRow from '../../../atoms/keyword_access/KeywordAccessRow'
+import PagingNav from '../../../blocks/common/PagingNav'
 import Layout from '../Layout'
 
 type Props = {
   keywords?: KeywordAccess[]
-  defaultViewTarget?: KeywordViewTarget
+  defaultPage: number
+  defaultViewTarget: KeywordViewTarget
 }
 
-const KeywordsTemplate: React.FC<Props> = ({ keywords, defaultViewTarget }) => {
-  const router = useRouter()
-  const [viewTarget, setViewTarget] = useState<KeywordViewTarget>(
-    defaultViewTarget ?? KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS
-  )
+const DATA_PER_PAGE = 20
 
-  const [sortedKeywords, setSortedKeywords] = useState<KeywordAccess[]>(null)
+const KeywordsTemplate: React.FC<Props> = ({
+  keywords,
+  defaultPage,
+  defaultViewTarget,
+}) => {
+  const router = useRouter()
+  const [viewTarget, setViewTarget] =
+    useState<KeywordViewTarget>(defaultViewTarget)
+  const [page, setPage] = useState(defaultPage)
+
+  const [sortedKeywords, setSortedKeywords] =
+    useState<KeywordAccess[]>(keywords)
 
   const onLabelChange = (newViewType: KeywordViewTarget) => {
     if (!keywords) {
@@ -45,8 +54,13 @@ const KeywordsTemplate: React.FC<Props> = ({ keywords, defaultViewTarget }) => {
 
   useEffect(() => {
     setSortedKeywords(sortKeywordsBy(keywords, viewTarget))
-    router?.replace(`/keywords?target=${viewTarget}`)
+    router?.replace(`/keywords?target=${viewTarget}&page=${page + 1}`)
   }, [keywords, viewTarget])
+
+  const onPageChange = (num: number) => {
+    router?.replace(`/keywords?target=${viewTarget}&page=${num + 1}`)
+    setPage(num)
+  }
 
   return (
     <Layout title="Keyword insights" heading="Keywords">
@@ -60,9 +74,10 @@ const KeywordsTemplate: React.FC<Props> = ({ keywords, defaultViewTarget }) => {
                 labelId="view-target-label"
                 label="数値"
                 value={viewTarget}
-                onChange={(e) =>
+                onChange={(e) => {
+                  setPage(0)
                   onLabelChange(e.target.value as KeywordViewTarget)
-                }
+                }}
               >
                 <MenuItem value={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}>
                   アクセス数/記事
@@ -78,18 +93,30 @@ const KeywordsTemplate: React.FC<Props> = ({ keywords, defaultViewTarget }) => {
           </Grid>
         </FormControl>
 
+        {keywords && (
+          <PagingNav
+            className={commonStyles.topPageNavContainer}
+            selectedPage={page}
+            maxPage={Math.ceil(keywords.length / DATA_PER_PAGE)}
+            displayNum={2}
+            onPageChanged={onPageChange}
+          />
+        )}
+
         <div className={commonStyles.listArea}>
           {sortedKeywords &&
-            sortedKeywords.map((keyword, i) => (
-              <div key={keyword.keyword}>
-                <KeywordInfoRow
-                  viewTarget={viewTarget}
-                  rank={i + 1}
-                  keywordInfo={keyword}
-                />
-                <Divider />
-              </div>
-            ))}
+            sortedKeywords
+              .slice(page * DATA_PER_PAGE, (page + 1) * DATA_PER_PAGE)
+              .map((keyword, i) => (
+                <div key={keyword.keyword}>
+                  <KeywordInfoRow
+                    viewTarget={viewTarget}
+                    rank={page * DATA_PER_PAGE + i + 1}
+                    keywordInfo={keyword}
+                  />
+                  <Divider />
+                </div>
+              ))}
         </div>
         {!sortedKeywords && (
           <div className={commonStyles.loadingContainer}>
@@ -101,6 +128,15 @@ const KeywordsTemplate: React.FC<Props> = ({ keywords, defaultViewTarget }) => {
           onClick={() => scrollToTop(window)}
         />
       </div>
+      {keywords && (
+        <PagingNav
+          className={commonStyles.bottomPageNavContainer}
+          selectedPage={page}
+          maxPage={Math.ceil(keywords.length / DATA_PER_PAGE)}
+          displayNum={2}
+          onPageChanged={onPageChange}
+        />
+      )}
     </Layout>
   )
 }
