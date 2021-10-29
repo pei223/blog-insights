@@ -13,6 +13,8 @@ import {
 import Head from 'next/head'
 import router from 'next/router'
 import React, { ReactNode, useEffect, useState } from 'react'
+import { SEARCH_PERIOD } from '../../../interfaces/commonInterfaces'
+import { KEYWORD_VIEW_TARGET } from '../../../interfaces/keywords/KeywordInfo'
 import styles from '../../../styles/layout.module.css'
 
 type Props = {
@@ -83,7 +85,11 @@ const Layout = ({ children, title, heading }: Props) => {
           <ListItem
             className={styles.sidemenuLink}
             button
-            onClick={() => router?.push('/keywords')}
+            onClick={() =>
+              router?.push(
+                `/keywords?period=${SEARCH_PERIOD.WEEK}&target=${KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}&page=1`
+              )
+            }
           >
             Keywords
           </ListItem>

@@ -1,13 +1,18 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "sourceType": "module"
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "prettier", "import", "unused-imports"],
+  "plugins": ["@typescript-eslint", "prettier", "unused-imports"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "prettier",
+    "plugin:prettier/recommended",
+    "next",
+    "next/core-web-vitals"
   ],
   "rules": {
     "sort-imports": 0,
@@ -28,16 +33,6 @@
     // anyは許容
     "@typescript-eslint/no-explicit-any": "off",
 
-    // 命名規則
-    "@typescript-eslint/naming-convention": [
-      "error",
-      // 基本キャメルケース
-      { "selector": "memberLike", "format": ["camelCase"] },
-      { "selector": "property", "format": ["camelCase"] },
-      // Enumはパスカルケース
-      { "selector": "enumMember", "format": ["PascalCase"] }
-    ],
-    // 戻り値がvoidの場合は省略許容
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off"
   }

@@ -1,13 +1,22 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import KeywordsTemplate from '../../src/components/templates/wordpresscom/keyword_view/KeywordsTemplate'
+import { SEARCH_PERIOD } from '../../src/interfaces/commonInterfaces'
 import { KEYWORD_VIEW_TARGET } from '../../src/interfaces/keywords/KeywordInfo'
+
+const dummy = () => {}
 
 storiesOf('templates/KeywordsTemplate', module)
   .add('default', () => (
     <KeywordsTemplate
-      defaultViewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
-      defaultPage={0}
+      loading={false}
+      viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
+      page={1}
+      period={SEARCH_PERIOD.WEEK}
+      maxPage={5}
+      onPeriodChange={dummy}
+      onViewTargetChange={dummy}
+      onPageChange={dummy}
       keywords={[
         {
           keyword: 'test',
@@ -44,8 +53,14 @@ storiesOf('templates/KeywordsTemplate', module)
   ))
   .add('loading', () => (
     <KeywordsTemplate
-      defaultViewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
-      defaultPage={0}
-      keywords={null}
+      loading={true}
+      viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
+      page={1}
+      period={SEARCH_PERIOD.WEEK}
+      maxPage={5}
+      onPeriodChange={dummy}
+      onViewTargetChange={dummy}
+      onPageChange={dummy}
+      keywords={[]}
     />
   ))

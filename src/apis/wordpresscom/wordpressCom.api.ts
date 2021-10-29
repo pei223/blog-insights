@@ -1,6 +1,10 @@
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import {
+  convertSearchPeriodToCondition,
+  SearchPeriod,
+} from '../../interfaces/commonInterfaces'
+import {
   PostAccess,
   SummarizedPostAccessRes,
 } from '../../interfaces/wordpresscom/postAccess'
@@ -79,9 +83,10 @@ export const useSiteInfo = (userInfo: UserInfo): ApiHookResult<SiteInfo> => {
 
 export const usePostAccessList = (
   userInfo: UserInfo | null,
-  period: 'day' | 'week',
-  num: number
+  searchPeriod: SearchPeriod
 ): ApiHookResult<PostAccess[]> => {
+  const condition = convertSearchPeriodToCondition(searchPeriod)
+
   const fetcher = async (url, token): Promise<PostAccess[]> => {
     const res = await wordpressComFetcher.get<SummarizedPostAccessRes>(url, {
       headers: {
@@ -92,10 +97,10 @@ export const usePostAccessList = (
     return res.data.summary.postviews
   }
 
-  const { data, error } = useSWR<PostAccess[]>(
+  const { data, isValidating, error } = useSWR<PostAccess[]>(
     userInfo
       ? [
-          `/sites/${userInfo.siteId}/stats/top-posts?period=${period}&num=${num}&summarize=true`,
+          `/sites/${userInfo.siteId}/stats/top-posts?period=${condition.period}&num=${condition.num}&summarize=true`,
           userInfo.accessToken,
         ]
       : null,
@@ -105,7 +110,7 @@ export const usePostAccessList = (
 
   return {
     data,
-    loading: !error && !data,
+    loading: isValidating,
     error: error,
   }
 }

@@ -6,6 +6,7 @@ import {
   useDailySiteAccess,
 } from '../../apis/wordpresscom/wordpressCom.api'
 import InsightsTemplate from '../../components/templates/wordpresscom/InsightsTemplate/InsightsTemplate'
+import { SEARCH_PERIOD } from '../../interfaces/commonInterfaces'
 import { KeywordAccess } from '../../interfaces/keywords/KeywordInfo'
 import { PostAccess } from '../../interfaces/wordpresscom/postAccess'
 import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
@@ -24,7 +25,10 @@ const InsightsIndexPage = () => {
     useState<KeywordAccess[]>(null)
 
   const { data: siteInfo } = useSiteInfo(userInfo)
-  const { data: postAccessList } = usePostAccessList(userInfo, 'day', 7)
+  const { data: postAccessList } = usePostAccessList(
+    userInfo,
+    SEARCH_PERIOD.WEEK
+  )
   const { data: siteAccessList } = useDailySiteAccess(userInfo)
 
   const calcKeywordInfoAsync = async (

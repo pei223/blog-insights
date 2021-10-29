@@ -22,11 +22,14 @@ const PagingNav = ({
   }
 
   const pageList = []
-  for (
-    let i = Math.max(selectedPage - displayNum, 0);
-    i <= Math.min(selectedPage + displayNum, maxPage - 1);
-    i++
-  ) {
+  const startPage =
+    Math.max(selectedPage - displayNum, 0) -
+    Math.max(selectedPage + 1 - maxPage + displayNum, 0)
+  const endPage = Math.min(
+    selectedPage + displayNum + Math.max(displayNum - selectedPage, 0),
+    maxPage - 1
+  )
+  for (let i = startPage; i <= endPage; i++) {
     pageList.push(i)
   }
 
@@ -45,6 +48,7 @@ const PagingNav = ({
         />
         {pageList.map((page) => (
           <span
+            key={page}
             className={`${styles.page} ${
               page === selectedPage && styles.selected
             }`}
