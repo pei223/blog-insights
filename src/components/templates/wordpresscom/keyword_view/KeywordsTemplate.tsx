@@ -75,8 +75,8 @@ const KeywordsTemplate: React.FC<Props> = ({
                 label="数値"
                 value={viewTarget}
                 onChange={(e) => {
-                  setPage(0)
                   onLabelChange(e.target.value as KeywordViewTarget)
+                  setPage(0)
                 }}
               >
                 <MenuItem value={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}>

@@ -14,7 +14,7 @@ import { readCachedUserInfo } from '../../services/storages/wordPressComStorage'
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   const target = context.query.target
     ? (context.query.target as string).toUpperCase()
-    : ''
+    : KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS.toUpperCase()
   const page = context.query.page ? Number(context.query.page) : 1
 
   return {
