@@ -25,7 +25,10 @@ export const getServerSideProps = (
     ? (context.query.period as string).toUpperCase()
     : undefined
   const page = context.query.page ? Number(context.query.page) : 1
-
+  const excludeOnePost =
+    context.query.excludeOnePost && context.query.excludeOnePost === 'true'
+      ? true
+      : false
   return {
     props: {
       viewTarget:
@@ -37,6 +40,7 @@ export const getServerSideProps = (
           ? SEARCH_PERIOD[searchPeriod]
           : SEARCH_PERIOD.WEEK,
       page: page - 1, // 表示上は+1のため
+      excludeOnePost: excludeOnePost,
     },
   }
 }
@@ -45,11 +49,17 @@ type Props = {
   viewTarget: KeywordViewTarget
   page: number
   searchPeriod: SearchPeriod
+  excludeOnePost: boolean
 }
 
 const DATA_PER_PAGE = 20
 
-const KeywordsPage: React.FC<Props> = ({ viewTarget, page, searchPeriod }) => {
+const KeywordsPage: React.FC<Props> = ({
+  viewTarget,
+  page,
+  searchPeriod,
+  excludeOnePost,
+}) => {
   const router = useRouter()
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null)
@@ -85,9 +95,14 @@ const KeywordsPage: React.FC<Props> = ({ viewTarget, page, searchPeriod }) => {
   const onConditionChange = (
     period: SearchPeriod,
     target: KeywordViewTarget,
-    page: number
+    page: number,
+    excludeOnePost: boolean
   ) => {
-    router?.push(`/keywords?target=${target}&period=${period}&page=${page + 1}`)
+    router?.push(
+      `/keywords?target=${target}&period=${period}&page=${
+        page + 1
+      }&excludeOnePost=${excludeOnePost}`
+    )
   }
 
   useEffect(() => {
@@ -98,26 +113,34 @@ const KeywordsPage: React.FC<Props> = ({ viewTarget, page, searchPeriod }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewTarget])
 
+  const filteredKeywords = excludeOnePost
+    ? keywords.filter((keyword) => keyword.postCount > 1)
+    : keywords
+
   return (
     <KeywordsTemplate
       loading={loading || apiLoading}
-      keywords={keywords.slice(
+      keywords={filteredKeywords.slice(
         page * DATA_PER_PAGE,
         (page + 1) * DATA_PER_PAGE
       )}
       viewTarget={viewTarget}
       page={page}
-      maxPage={Math.ceil(keywords.length / DATA_PER_PAGE)}
+      maxPage={Math.ceil(filteredKeywords.length / DATA_PER_PAGE)}
       period={searchPeriod}
+      excludeOnePost={excludeOnePost}
       onPageChange={(newPage) =>
-        onConditionChange(searchPeriod, viewTarget, newPage)
+        onConditionChange(searchPeriod, viewTarget, newPage, excludeOnePost)
       }
       onPeriodChange={(newPeriod) =>
-        onConditionChange(newPeriod, viewTarget, 0)
+        onConditionChange(newPeriod, viewTarget, 0, excludeOnePost)
       }
       onViewTargetChange={(newTarget) =>
-        onConditionChange(searchPeriod, newTarget, 0)
+        onConditionChange(searchPeriod, newTarget, 0, excludeOnePost)
       }
+      onExcludeOnePostChange={(newFlag) => {
+        onConditionChange(searchPeriod, viewTarget, 0, newFlag)
+      }}
     />
   )
 }

@@ -14,9 +14,11 @@ storiesOf('templates/KeywordsTemplate', module)
       page={1}
       period={SEARCH_PERIOD.WEEK}
       maxPage={5}
+      excludeOnePost={true}
       onPeriodChange={dummy}
       onViewTargetChange={dummy}
       onPageChange={dummy}
+      onExcludeOnePostChange={dummy}
       keywords={[
         {
           keyword: 'test',
@@ -58,9 +60,11 @@ storiesOf('templates/KeywordsTemplate', module)
       page={1}
       period={SEARCH_PERIOD.WEEK}
       maxPage={5}
+      excludeOnePost={false}
       onPeriodChange={dummy}
       onViewTargetChange={dummy}
       onPageChange={dummy}
       keywords={[]}
+      onExcludeOnePostChange={dummy}
     />
   ))

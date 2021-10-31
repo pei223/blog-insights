@@ -1,7 +1,10 @@
 import {
+  Checkbox,
   CircularProgress,
   Divider,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputLabel,
   MenuItem,
@@ -32,9 +35,11 @@ type Props = {
   maxPage: number
   viewTarget: KeywordViewTarget
   period: SearchPeriod
+  excludeOnePost: boolean
   onPageChange: (page: number) => void
   onViewTargetChange: (target: KeywordViewTarget) => void
   onPeriodChange: (period: SearchPeriod) => void
+  onExcludeOnePostChange: (excldue: boolean) => void
 }
 
 const KeywordsTemplate: React.FC<Props> = ({
@@ -44,9 +49,11 @@ const KeywordsTemplate: React.FC<Props> = ({
   maxPage,
   viewTarget,
   period,
+  excludeOnePost,
   onPageChange,
   onViewTargetChange,
   onPeriodChange,
+  onExcludeOnePostChange,
 }) => {
   if (loading) {
     return (
@@ -103,6 +110,19 @@ const KeywordsTemplate: React.FC<Props> = ({
                 <MenuItem value={SEARCH_PERIOD.YEAR}>1年間</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormGroup className={styles.excludeOnePostCheck}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={excludeOnePost}
+                    onChange={(e) => onExcludeOnePostChange(e.target.checked)}
+                  />
+                }
+                label="1記事のみのデータを除外"
+              />
+            </FormGroup>
           </Grid>
         </Grid>
         <PagingNav
