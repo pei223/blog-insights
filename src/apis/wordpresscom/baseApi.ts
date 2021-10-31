@@ -5,7 +5,7 @@ const WORDPRESS_COM_OAUTH_URL =
 const WORDPRESS_COM_SCOPE = 'auth posts stats sites'
 
 export const wordpressComFetcher = axios.create({
-  baseURL: 'https://public-api.wordpress.com/rest/v1.1',
+  baseURL: process.env.NEXT_PUBLIC_WORDPRESS_API_PATH,
 })
 
 export const generateWordpressComURL = (blogUrl: string): string => {

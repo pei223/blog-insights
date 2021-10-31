@@ -1,9 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "dev": "dotenv -e envs/.local.env next",
+    "dev": "next",
+    "dev:mock": "run-p dev-front-mock mock-server",
     "build": "next build",
     "start": "next start",
+    "dev-front-mock": "dotenv -e .env.with-mock next",
+    "mock-server": "json-server _mock/db.json --routes _mock/routes.json -p 3001",
     "type-check": "tsc",
     "storybook:build": "npm-run-all setup-storybook build-storybook",
     "storybook:start": "start-storybook -p 6006",
@@ -56,6 +59,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unused-imports": "^1.1.5",
     "jest": "^27.0.5",
+    "json-server": "^0.17.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.3.2",
     "storybook": "^6.3.8",
