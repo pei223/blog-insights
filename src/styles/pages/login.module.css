@@ -1,0 +1,39 @@
+.root {
+  height: 100vh;
+  background-color: #e9e9e9;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+  padding: 100px 10px 0 10px;
+}
+
+.loginCardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 170px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.inputArea {
+  width: 100%;
+  text-align: center;
+}
+
+.loginTitle {
+  font-weight: 600;
+  font-size: 18px;
+  color: #595959;
+}
+
+.urlField {
+  width: 100%;
+}
+
+.loginButton {
+  width: 100%;
+}

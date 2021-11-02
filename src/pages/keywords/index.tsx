@@ -2,7 +2,10 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { usePostAccessList } from '../../apis/wordpresscom/wordpressCom.api'
+import {
+  isAuthError,
+  usePostAccessList,
+} from '../../apis/wordpresscom/wordpressCom.api'
 import KeywordsTemplate from '../../components/templates/wordpresscom/keyword_view/KeywordsTemplate'
 import { SearchPeriod, SEARCH_PERIOD } from '../../interfaces/commonInterfaces'
 import {
@@ -13,7 +16,10 @@ import {
 } from '../../interfaces/keywords/KeywordInfo'
 import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
 import KeywordService from '../../services/keywords/KeywordService'
-import { readCachedUserInfo } from '../../services/storages/wordPressComStorage'
+import {
+  clearUserInfoCache,
+  readCachedUserInfo,
+} from '../../services/storages/wordPressComStorage'
 
 export const getServerSideProps = (
   context: GetServerSidePropsContext
@@ -64,18 +70,24 @@ const KeywordsPage: React.FC<Props> = ({
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null)
 
-  const { data, loading: apiLoading } = usePostAccessList(
-    userInfo,
-    searchPeriod
-  )
+  const {
+    data,
+    error,
+    loading: apiLoading,
+  } = usePostAccessList(userInfo, searchPeriod)
 
   const [keywords, setKeywords] = useState<KeywordAccess[]>([])
   const [loading, setLoading] = useState(true)
 
+  if (error && isAuthError(error.response)) {
+    clearUserInfoCache()
+    router.push('/login')
+  }
+
   useEffect(() => {
     const _userInfo = readCachedUserInfo()
     if (!_userInfo) {
-      router.push('/error')
+      router.push('/login')
       return
     }
     setUserInfo(_userInfo)

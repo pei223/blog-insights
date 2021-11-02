@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import {
@@ -36,6 +37,14 @@ export const parseSiteInfoFromQueryParams = (url: string): UserInfo | null => {
     accessToken: decodeURIComponent(params['access_token']),
     siteId: params['site_id'],
   }
+}
+
+export const isAuthError = (response?: AxiosResponse) => {
+  return (
+    response &&
+    response.status === 400 &&
+    response.data.error === 'invalid_token'
+  )
 }
 
 export const useDailySiteAccess = (

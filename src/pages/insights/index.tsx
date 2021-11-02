@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import {
   parseSiteInfoFromQueryParams,
   useSiteInfo,
   usePostAccessList,
   useDailySiteAccess,
+  isAuthError,
 } from '../../apis/wordpresscom/wordpressCom.api'
 import InsightsTemplate from '../../components/templates/wordpresscom/InsightsTemplate/InsightsTemplate'
 import { SEARCH_PERIOD } from '../../interfaces/commonInterfaces'
@@ -19,17 +21,19 @@ import {
 } from '../../services/storages/wordPressComStorage'
 
 const InsightsIndexPage = () => {
+  const router = useRouter()
   const [userInfo, setUserInfo] = useState<UserInfo>(null)
 
   const [keywordAccessInfoList, setKeywordAccessInfoList] =
     useState<KeywordAccess[]>(null)
 
-  const { data: siteInfo } = useSiteInfo(userInfo)
-  const { data: postAccessList } = usePostAccessList(
+  const { data: siteInfo, error: siteInfoError } = useSiteInfo(userInfo)
+  const { data: postAccessList, error: postAccessError } = usePostAccessList(
     userInfo,
     SEARCH_PERIOD.WEEK
   )
-  const { data: siteAccessList } = useDailySiteAccess(userInfo)
+  const { data: siteAccessList, error: siteAccessError } =
+    useDailySiteAccess(userInfo)
 
   const calcKeywordInfoAsync = async (
     postInfoList: PostAccess[]
@@ -60,6 +64,13 @@ const InsightsIndexPage = () => {
       setKeywordAccessInfoList(keywords)
     })
   }, [postAccessList])
+
+  if (siteInfoError || siteAccessError || postAccessError) {
+    const error = siteInfoError || siteAccessError || postAccessError
+    if (isAuthError(error.response)) {
+      router.push('/login')
+    }
+  }
 
   return (
     <div>
