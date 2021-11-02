@@ -15,6 +15,7 @@ import {
   sortKeywordsBy,
 } from '../../interfaces/keywords/KeywordInfo'
 import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
+import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import KeywordService from '../../services/keywords/KeywordService'
 import {
   clearUserInfoCache,
@@ -81,13 +82,14 @@ const KeywordsPage: React.FC<Props> = ({
 
   if (error && isAuthError(error.response)) {
     clearUserInfoCache()
-    router.push('/login')
+    router.push(AUTH_ERROR_REDIRECT_URL)
   }
 
   useEffect(() => {
     const _userInfo = readCachedUserInfo()
     if (!_userInfo) {
-      router.push('/login')
+      clearUserInfoCache()
+      router.push(AUTH_ERROR_REDIRECT_URL)
       return
     }
     setUserInfo(_userInfo)

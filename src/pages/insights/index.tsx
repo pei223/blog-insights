@@ -53,6 +53,7 @@ const InsightsIndexPage = () => {
     if (!userInfo) {
       clearUserInfoCache()
       window.location.href = AUTH_ERROR_REDIRECT_URL
+      return
     }
     saveUserInfoCache(userInfo)
     setUserInfo(userInfo)
@@ -68,7 +69,8 @@ const InsightsIndexPage = () => {
   if (siteInfoError || siteAccessError || postAccessError) {
     const error = siteInfoError || siteAccessError || postAccessError
     if (isAuthError(error.response)) {
-      router.push('/login')
+      clearUserInfoCache()
+      router.push(AUTH_ERROR_REDIRECT_URL)
     }
   }
 
