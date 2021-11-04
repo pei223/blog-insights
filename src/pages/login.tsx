@@ -17,6 +17,7 @@ const LoginPage = () => {
   const [url, setUrl] = useState('')
 
   const transitWordpressCom = () => {
+    if (url === '') return
     window.location.href = generateWordpressComURL(url)
   }
 
