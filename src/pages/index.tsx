@@ -31,7 +31,7 @@ const IndexPage = () => {
       <h1 className={styles.topTitle}>
         Blog insights
         <br />
-        ブログアクセス分析ツール
+        Wordpressブログアクセス分析ツール
       </h1>
       <section className={styles.section1}>
         <Grid container spacing={4}>
