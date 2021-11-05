@@ -79,7 +79,7 @@ const Layout = ({ children, title, heading }: Props) => {
             button
             onClick={() => router?.push('/insights')}
           >
-            Insights
+            TOP
           </ListItem>
           <Divider />
           <ListItem
@@ -91,7 +91,15 @@ const Layout = ({ children, title, heading }: Props) => {
               )
             }
           >
-            Keywords
+            キーワードごとのアクセス数
+          </ListItem>
+          <Divider />
+          <ListItem
+            className={styles.sidemenuLink}
+            button
+            onClick={() => router?.push(`/posts`)}
+          >
+            記事ごとのアクセス数
           </ListItem>
           <Divider />
         </div>

@@ -82,14 +82,14 @@ const KeywordsPage: React.FC<Props> = ({
 
   if (error && isAuthError(error.response)) {
     clearUserInfoCache()
-    router.push(AUTH_ERROR_REDIRECT_URL)
+    router.replace(AUTH_ERROR_REDIRECT_URL)
   }
 
   useEffect(() => {
     const _userInfo = readCachedUserInfo()
     if (!_userInfo) {
       clearUserInfoCache()
-      router.push(AUTH_ERROR_REDIRECT_URL)
+      router.replace(AUTH_ERROR_REDIRECT_URL)
       return
     }
     setUserInfo(_userInfo)
@@ -112,12 +112,18 @@ const KeywordsPage: React.FC<Props> = ({
     page: number,
     excludeOnePost: boolean
   ) => {
+    setLoading(true)
     router?.push(
       `/keywords?target=${target}&period=${period}&page=${
         page + 1
       }&excludeOnePost=${excludeOnePost}`
     )
+    setLoading(false)
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [viewTarget, excludeOnePost, searchPeriod])
 
   useEffect(() => {
     setLoading(true)

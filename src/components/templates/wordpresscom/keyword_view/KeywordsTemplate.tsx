@@ -57,7 +57,10 @@ const KeywordsTemplate: React.FC<Props> = ({
 }) => {
   if (loading) {
     return (
-      <Layout title="Keyword insights" heading="Keywords">
+      <Layout
+        title="キーワードごとのアクセス数 - blog insights"
+        heading="キーワードごとのアクセス数"
+      >
         <div className={commonStyles.loadingContainer}>
           <CircularProgress size={80} />
         </div>
@@ -65,7 +68,10 @@ const KeywordsTemplate: React.FC<Props> = ({
     )
   }
   return (
-    <Layout title="Keyword insights" heading="Keywords">
+    <Layout
+      title="キーワードごとのアクセス数 - blog insights"
+      heading="キーワードごとのアクセス数"
+    >
       <div className={commonStyles.content}>
         <Grid container>
           <Grid item xs={6} sm={4}>

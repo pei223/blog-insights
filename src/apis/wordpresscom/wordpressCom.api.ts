@@ -62,7 +62,8 @@ export const useDailySiteAccess = (
 
   const { data, error } = useSWR<SiteAccess[]>(
     userInfo ? [`/sites/${userInfo.siteId}/stats`, userInfo.accessToken] : null,
-    fetcher
+    fetcher,
+    { dedupingInterval: 1000 * 60 }
   )
 
   return {
@@ -114,7 +115,7 @@ export const usePostAccessList = (
         ]
       : null,
     fetcher,
-    { dedupingInterval: 5000 }
+    { dedupingInterval: 1000 * 60 }
   )
 
   return {

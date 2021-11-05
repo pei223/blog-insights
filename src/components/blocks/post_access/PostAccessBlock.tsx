@@ -7,6 +7,7 @@ import {
   List,
   Typography,
 } from '@mui/material'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { PostAccess } from '../../../interfaces/wordpresscom/postAccess'
 import styles from '../../../styles/blocks/insightsBlock.module.css'
@@ -18,6 +19,8 @@ type Props = {
 }
 
 const PostAccessInfoBlock = ({ className, postInfoList }: Props) => {
+  const router = useRouter()
+
   return (
     <Card className={className} style={{ position: 'relative' }}>
       <CardContent className={styles.cardContainer}>
@@ -40,7 +43,7 @@ const PostAccessInfoBlock = ({ className, postInfoList }: Props) => {
               </List>
             </div>
             <div className={styles.seeMoreArea}>
-              <Button>もっと見る</Button>
+              <Button onClick={() => router.push('/posts')}>もっと見る</Button>
             </div>
           </>
         )}

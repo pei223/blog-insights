@@ -52,11 +52,13 @@ const InsightsIndexPage = () => {
     userInfo = parseSiteInfoFromQueryParams(window.location.href)
     if (!userInfo) {
       clearUserInfoCache()
-      window.location.href = AUTH_ERROR_REDIRECT_URL
+      router.replace(AUTH_ERROR_REDIRECT_URL)
       return
     }
     saveUserInfoCache(userInfo)
     setUserInfo(userInfo)
+    // 初回マウントのみの処理のため
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const InsightsIndexPage = () => {
     const error = siteInfoError || siteAccessError || postAccessError
     if (isAuthError(error.response)) {
       clearUserInfoCache()
-      router.push(AUTH_ERROR_REDIRECT_URL)
+      router.replace(AUTH_ERROR_REDIRECT_URL)
     }
   }
 
@@ -79,7 +81,7 @@ const InsightsIndexPage = () => {
       <InsightsTemplate
         siteInfo={siteInfo}
         keywordRankingList={keywordAccessInfoList}
-        postAccessRankingList={postAccessList}
+        postAccessRankingList={postAccessList?.slice(0, 50)}
         dailySiteAccessList={siteAccessList ? siteAccessList.slice(-14) : null}
       />
     </div>
