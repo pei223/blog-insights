@@ -6,5 +6,6 @@ declare namespace NodeJS {
     readonly NEXT_PUBLIC_BASE_URL: string
     readonly NEXT_PUBLIC_CLIENT_ID: string
     readonly NEXT_PUBLIC_WORDPRESS_API_PATH: string
+    readonly NEXT_PUBLIC_DEPLOY_MODE: 'dev' | 'prod'
   }
 }
