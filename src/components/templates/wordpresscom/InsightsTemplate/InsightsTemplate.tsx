@@ -25,7 +25,7 @@ const InsightsTemplate = ({
 }: Props) => {
   return (
     <Layout
-      title="Blog insights"
+      title="insights - blog insights"
       heading={siteInfo ? `${siteInfo.name} insights` : '...'}
     >
       <div className={styles.statsGraphArea}>
