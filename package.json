@@ -5,6 +5,7 @@
     "dev:mock": "run-p dev-front-mock mock-server",
     "build": "next build",
     "start": "next start",
+    "build:sitemap": "npm-run-all build generate-sitemap",
     "dev-front-mock": "dotenv -e .env.with-mock next",
     "mock-server": "json-server _mock/db.json --routes _mock/routes.json -p 3001",
     "type-check": "tsc",
@@ -13,6 +14,7 @@
     "lint:fix": "eslint --fix \"src/**/*.{ts,js,tsx}\"",
     "setup-storybook": "npx sb init -f",
     "build-storybook": "build-storybook",
+    "generate-sitemap": "next-sitemap",
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
@@ -61,6 +63,7 @@
     "eslint-plugin-unused-imports": "^1.1.5",
     "jest": "^27.0.5",
     "json-server": "^0.17.0",
+    "next-sitemap": "^1.6.203",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.3.2",
     "storybook": "^6.3.8",
