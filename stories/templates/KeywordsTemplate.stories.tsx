@@ -11,9 +11,10 @@ storiesOf('templates/KeywordsTemplate', module)
     <KeywordsTemplate
       loading={false}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
-      page={1}
+      page={0}
       period={SEARCH_PERIOD.WEEK}
       maxPage={5}
+      dataCountPerPage={10}
       excludeOnePost={true}
       onPeriodChange={dummy}
       onViewTargetChange={dummy}
@@ -58,6 +59,7 @@ storiesOf('templates/KeywordsTemplate', module)
       loading={true}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
       page={1}
+      dataCountPerPage={10}
       period={SEARCH_PERIOD.WEEK}
       maxPage={5}
       excludeOnePost={false}

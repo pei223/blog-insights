@@ -59,10 +59,12 @@ export default class KeywordService {
   }
 
   private filterOtherThanAlphabetAndJapanese(text: string) {
-    return text.replaceAll(
-      /[^a-zA-Z\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]/g,
-      ''
-    )
+    return text
+      .replaceAll(
+        /[^a-zA-Z\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]/g,
+        ''
+      )
+      .toLocaleLowerCase()
   }
 
   private isUnwantedWord(word: string): boolean {

@@ -26,6 +26,7 @@ type Props = {
   posts: PostAccess[]
   page: number
   maxPage: number
+  dataCountPerPage: number
   period: SearchPeriod
   onPageChange: (page: number) => void
   onPeriodChange: (period: SearchPeriod) => void
@@ -36,6 +37,7 @@ const PostsTemplate: React.FC<Props> = ({
   posts,
   page,
   maxPage,
+  dataCountPerPage,
   period,
   onPageChange,
   onPeriodChange,
@@ -91,7 +93,7 @@ const PostsTemplate: React.FC<Props> = ({
           {posts.map((post, i) => (
             <div key={post.title}>
               <PostAccessInfoRow
-                rank={posts.length * page + i + 1}
+                rank={dataCountPerPage * page + i + 1}
                 postInfo={post}
               />
               <Divider />

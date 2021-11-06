@@ -7,6 +7,7 @@ const dummy = () => {}
 storiesOf('templates/PostsTemplate', module)
   .add('default', () => (
     <PostsTemplate
+      dataCountPerPage={10}
       loading={false}
       posts={[
         {
@@ -67,6 +68,7 @@ storiesOf('templates/PostsTemplate', module)
   ))
   .add('loading', () => (
     <PostsTemplate
+      dataCountPerPage={10}
       loading={true}
       posts={[]}
       page={0}

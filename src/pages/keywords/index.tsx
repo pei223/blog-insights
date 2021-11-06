@@ -60,7 +60,7 @@ type Props = {
   excludeOnePost: boolean
 }
 
-const DATA_PER_PAGE = 20
+const DATA_COUNT_PER_PAGE = 20
 
 const KeywordsPage: React.FC<Props> = ({
   viewTarget,
@@ -144,12 +144,13 @@ const KeywordsPage: React.FC<Props> = ({
       <KeywordsTemplate
         loading={loading || apiLoading}
         keywords={filteredKeywords.slice(
-          page * DATA_PER_PAGE,
-          (page + 1) * DATA_PER_PAGE
+          page * DATA_COUNT_PER_PAGE,
+          (page + 1) * DATA_COUNT_PER_PAGE
         )}
         viewTarget={viewTarget}
         page={page}
-        maxPage={Math.ceil(filteredKeywords.length / DATA_PER_PAGE)}
+        maxPage={Math.ceil(filteredKeywords.length / DATA_COUNT_PER_PAGE)}
+        dataCountPerPage={DATA_COUNT_PER_PAGE}
         period={searchPeriod}
         excludeOnePost={excludeOnePost}
         onPageChange={(newPage) =>

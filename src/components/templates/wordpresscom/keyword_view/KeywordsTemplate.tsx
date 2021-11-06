@@ -33,6 +33,7 @@ type Props = {
   keywords: KeywordAccess[]
   page: number
   maxPage: number
+  dataCountPerPage: number
   viewTarget: KeywordViewTarget
   period: SearchPeriod
   excludeOnePost: boolean
@@ -47,6 +48,7 @@ const KeywordsTemplate: React.FC<Props> = ({
   keywords,
   page,
   maxPage,
+  dataCountPerPage,
   viewTarget,
   period,
   excludeOnePost,
@@ -144,7 +146,7 @@ const KeywordsTemplate: React.FC<Props> = ({
             <div key={keyword.keyword}>
               <KeywordInfoRow
                 viewTarget={viewTarget}
-                rank={keywords.length * page + i + 1}
+                rank={dataCountPerPage * page + i + 1}
                 keywordInfo={keyword}
               />
               <Divider />

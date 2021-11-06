@@ -39,7 +39,7 @@ type Props = {
   searchPeriod: SearchPeriod
 }
 
-const DATA_PER_PAGE = 20
+const DATA_COUNT_PER_PAGE = 20
 
 const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
   const router = useRouter()
@@ -76,11 +76,15 @@ const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
         loading={loading}
         posts={
           data
-            ? data.slice(page * DATA_PER_PAGE, (page + 1) * DATA_PER_PAGE)
+            ? data.slice(
+                page * DATA_COUNT_PER_PAGE,
+                (page + 1) * DATA_COUNT_PER_PAGE
+              )
             : []
         }
         page={page}
-        maxPage={data ? Math.ceil(data.length / DATA_PER_PAGE) : 0}
+        maxPage={data ? Math.ceil(data.length / DATA_COUNT_PER_PAGE) : 0}
+        dataCountPerPage={DATA_COUNT_PER_PAGE}
         period={searchPeriod}
         onPageChange={(newPage) => onConditionChange(newPage, searchPeriod)}
         onPeriodChange={(newSearchPeriod) =>
