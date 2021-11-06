@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
@@ -69,19 +70,24 @@ const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
   }
 
   return (
-    <PostsTemplate
-      loading={loading}
-      posts={
-        data ? data.slice(page * DATA_PER_PAGE, (page + 1) * DATA_PER_PAGE) : []
-      }
-      page={page}
-      maxPage={data ? Math.ceil(data.length / DATA_PER_PAGE) : 0}
-      period={searchPeriod}
-      onPageChange={(newPage) => onConditionChange(newPage, searchPeriod)}
-      onPeriodChange={(newSearchPeriod) =>
-        onConditionChange(0, newSearchPeriod)
-      }
-    />
+    <>
+      <NextSeo noindex={true} />
+      <PostsTemplate
+        loading={loading}
+        posts={
+          data
+            ? data.slice(page * DATA_PER_PAGE, (page + 1) * DATA_PER_PAGE)
+            : []
+        }
+        page={page}
+        maxPage={data ? Math.ceil(data.length / DATA_PER_PAGE) : 0}
+        period={searchPeriod}
+        onPageChange={(newPage) => onConditionChange(newPage, searchPeriod)}
+        onPeriodChange={(newSearchPeriod) =>
+          onConditionChange(0, newSearchPeriod)
+        }
+      />
+    </>
   )
 }
 export default PostsPage

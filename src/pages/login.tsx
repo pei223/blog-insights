@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { NextSeo } from 'next-seo'
 import router from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { generateWordpressComURL } from '../apis/wordpresscom/baseApi'
@@ -39,42 +40,45 @@ const LoginPage = () => {
   }, [])
 
   return (
-    <NologinLayout title="login - blog insights">
-      <div className={styles.root}>
-        <Grid container className={styles.container}>
-          <Grid item sm={6} xs={12}>
-            <Card>
-              <CardContent className={styles.loginCardContent}>
-                <div className={styles.inputArea}>
-                  <Typography
-                    variant="h6"
-                    component="h2"
-                    className={styles.loginTitle}
+    <>
+      <NextSeo title="ログイン - blog insights" description="ログイン" />
+      <NologinLayout title="login - blog insights">
+        <div className={styles.root}>
+          <Grid container className={styles.container}>
+            <Grid item sm={6} xs={12}>
+              <Card>
+                <CardContent className={styles.loginCardContent}>
+                  <div className={styles.inputArea}>
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      className={styles.loginTitle}
+                    >
+                      ログイン
+                    </Typography>
+                    <TextField
+                      label="URLを入力"
+                      variant="standard"
+                      className={styles.urlField}
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.loginButton}
+                    onClick={transitWordpressCom}
                   >
-                    ログイン
-                  </Typography>
-                  <TextField
-                    label="URLを入力"
-                    variant="standard"
-                    className={styles.urlField}
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                  />
-                </div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={styles.loginButton}
-                  onClick={transitWordpressCom}
-                >
-                  Wordpress.comにログイン
-                </Button>
-              </CardContent>
-            </Card>
+                    Wordpress.comにログイン
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
-    </NologinLayout>
+        </div>
+      </NologinLayout>
+    </>
   )
 }
 

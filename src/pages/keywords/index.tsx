@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
@@ -138,30 +139,33 @@ const KeywordsPage: React.FC<Props> = ({
     : keywords
 
   return (
-    <KeywordsTemplate
-      loading={loading || apiLoading}
-      keywords={filteredKeywords.slice(
-        page * DATA_PER_PAGE,
-        (page + 1) * DATA_PER_PAGE
-      )}
-      viewTarget={viewTarget}
-      page={page}
-      maxPage={Math.ceil(filteredKeywords.length / DATA_PER_PAGE)}
-      period={searchPeriod}
-      excludeOnePost={excludeOnePost}
-      onPageChange={(newPage) =>
-        onConditionChange(searchPeriod, viewTarget, newPage, excludeOnePost)
-      }
-      onPeriodChange={(newPeriod) =>
-        onConditionChange(newPeriod, viewTarget, 0, excludeOnePost)
-      }
-      onViewTargetChange={(newTarget) =>
-        onConditionChange(searchPeriod, newTarget, 0, excludeOnePost)
-      }
-      onExcludeOnePostChange={(newFlag) => {
-        onConditionChange(searchPeriod, viewTarget, 0, newFlag)
-      }}
-    />
+    <>
+      <NextSeo noindex={true} />
+      <KeywordsTemplate
+        loading={loading || apiLoading}
+        keywords={filteredKeywords.slice(
+          page * DATA_PER_PAGE,
+          (page + 1) * DATA_PER_PAGE
+        )}
+        viewTarget={viewTarget}
+        page={page}
+        maxPage={Math.ceil(filteredKeywords.length / DATA_PER_PAGE)}
+        period={searchPeriod}
+        excludeOnePost={excludeOnePost}
+        onPageChange={(newPage) =>
+          onConditionChange(searchPeriod, viewTarget, newPage, excludeOnePost)
+        }
+        onPeriodChange={(newPeriod) =>
+          onConditionChange(newPeriod, viewTarget, 0, excludeOnePost)
+        }
+        onViewTargetChange={(newTarget) =>
+          onConditionChange(searchPeriod, newTarget, 0, excludeOnePost)
+        }
+        onExcludeOnePostChange={(newFlag) => {
+          onConditionChange(searchPeriod, viewTarget, 0, newFlag)
+        }}
+      />
+    </>
   )
 }
 export default KeywordsPage

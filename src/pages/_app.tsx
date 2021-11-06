@@ -1,4 +1,4 @@
-import { NextSeo } from 'next-seo'
+import { DefaultSeo } from 'next-seo'
 import Script from 'next/script'
 import React from 'react'
 import './styles.css'
@@ -6,9 +6,9 @@ import './styles.css'
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
-      <NextSeo
+      <DefaultSeo
+        defaultTitle="blog insights"
         canonical="https://blog-insights.vercel.app"
-        title="blog insights"
         description="Wordpressブログアクセス分析ツール"
         twitter={{
           handle: '',
@@ -19,6 +19,7 @@ export default function MyApp({ Component, pageProps }) {
           type: 'website',
           title: 'blog insights',
           description: 'Wordpressブログアクセス分析ツール',
+          site_name: 'blog insights',
           url: 'https://blog-insights.vercel.app',
           // TODO OGP画像
           images: [],

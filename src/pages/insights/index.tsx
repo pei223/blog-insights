@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import {
@@ -77,14 +78,15 @@ const InsightsIndexPage = () => {
   }
 
   return (
-    <div>
+    <>
+      <NextSeo noindex={true} />
       <InsightsTemplate
         siteInfo={siteInfo}
         keywordRankingList={keywordAccessInfoList}
         postAccessRankingList={postAccessList?.slice(0, 50)}
         dailySiteAccessList={siteAccessList ? siteAccessList.slice(-14) : null}
       />
-    </div>
+    </>
   )
 }
 
