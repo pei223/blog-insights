@@ -22,9 +22,14 @@ const PagingNav = ({
   }
 
   const pageList = []
-  const startPage =
-    Math.max(selectedPage - displayNum, 0) -
-    Math.max(selectedPage + 1 - maxPage + displayNum, 0)
+  //5ページ中5ページ目なら1~5まで表示させたいので(selectedPage - (maxPage - 1) + displayNum)を減産する
+  const startPage = Math.max(
+    selectedPage -
+      displayNum -
+      Math.max(selectedPage - (maxPage - 1) + displayNum, 0),
+    0
+  )
+  // 5ページ中1ページ目なら1~5まで表示させたいので(displayNum - selectedPage)を追加する
   const endPage = Math.min(
     selectedPage + displayNum + Math.max(displayNum - selectedPage, 0),
     maxPage - 1

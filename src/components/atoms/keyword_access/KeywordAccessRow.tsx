@@ -1,4 +1,5 @@
 import { ListItem } from '@mui/material'
+import { useRouter } from 'next/router'
 import React from 'react'
 import {
   KeywordAccess,
@@ -21,6 +22,7 @@ const KeywordInfoRow = ({
   keywordInfo,
   viewTarget = KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS,
 }: Props) => {
+  const router = useRouter()
   const value =
     viewTarget === KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS
       ? roundDigit(keywordInfo.averagePostAccess, 2)
@@ -39,6 +41,7 @@ const KeywordInfoRow = ({
       style={{
         width: width,
       }}
+      onClick={() => router.push(`/keywords/${keywordInfo.keyword}`)}
     >
       <div className={commonStyles.rank}>{rank}&#046;</div>
       <div className={commonStyles.textArea}>

@@ -17,6 +17,59 @@ export default class KeywordService {
     return this.instance
   }
 
+  /**
+   * 指定したキーワードと共起するキーワードを取得する
+   * @param keyword 指定キーワード
+   * @param postAccessList 記事アクセス情報リスト
+   * @returns 指定したキーワードと同時に出現するキーワード一覧
+   */
+  parseCoOccurrenceKeywords(
+    targetKeyword: string,
+    postAccessList: PostAccess[]
+  ): KeywordAccess[] {
+    const TinySegmenter = require('tiny-segmenter')
+    const segmenter = new TinySegmenter()
+    const keywordAccessDict = {}
+    const keywordPostCountDict = {}
+    postAccessList.forEach((post) => {
+      const keys: string[] = segmenter.segment(post.title)
+      const keywords = keys
+        .map((key) => this.filterOtherThanAlphabetAndJapanese(key))
+        .filter((keyword) => !this.isUnwantedWord(keyword))
+      if (keywords.includes(targetKeyword)) {
+        keywords
+          .filter((keyword) => keyword !== targetKeyword)
+          .forEach((keyword) => {
+            if (!keywordAccessDict[keyword]) {
+              keywordAccessDict[keyword] = post.views
+            } else {
+              keywordAccessDict[keyword] += post.views
+            }
+            if (!keywordPostCountDict[keyword]) {
+              keywordPostCountDict[keyword] = 1
+            } else {
+              keywordPostCountDict[keyword] += 1
+            }
+          })
+      }
+    })
+
+    const keywordInfoList = Object.keys(keywordAccessDict).map(
+      (key): KeywordAccess => {
+        return {
+          keyword: key,
+          postCount: keywordPostCountDict[key],
+          totalAccess: keywordAccessDict[key],
+          averagePostAccess: keywordAccessDict[key] / keywordPostCountDict[key],
+        }
+      }
+    )
+    keywordInfoList.sort((a, b) => {
+      return b.averagePostAccess - a.averagePostAccess
+    })
+    return keywordInfoList
+  }
+
   parseToKeywordInfo(postAccessList: PostAccess[]): KeywordAccess[] {
     const TinySegmenter = require('tiny-segmenter')
     const segmenter = new TinySegmenter()

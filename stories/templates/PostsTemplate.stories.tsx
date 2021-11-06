@@ -78,3 +78,15 @@ storiesOf('templates/PostsTemplate', module)
       onPeriodChange={dummy}
     />
   ))
+  .add('no content', () => (
+    <PostsTemplate
+      dataCountPerPage={10}
+      loading={false}
+      posts={[]}
+      page={0}
+      maxPage={0}
+      period={'week'}
+      onPageChange={dummy}
+      onPeriodChange={dummy}
+    />
+  ))

@@ -54,33 +54,54 @@ const PostsTemplate: React.FC<Props> = ({
       </Layout>
     )
   }
+
+  const searchConditionArea = (
+    <Grid container>
+      <Grid item xs={12} sm={8}>
+        <FormControl variant="standard" className={styles.formArea}>
+          <InputLabel id="period-label">期間</InputLabel>
+          <Select
+            className={styles.periodSelect}
+            labelId="period-label"
+            label="期間"
+            value={period}
+            onChange={(e) => {
+              onPeriodChange(e.target.value as SearchPeriod)
+            }}
+          >
+            <MenuItem value={SEARCH_PERIOD.WEEK}>1週間</MenuItem>
+            <MenuItem value={SEARCH_PERIOD.MONTH}>1ヶ月間</MenuItem>
+            <MenuItem value={SEARCH_PERIOD.HALF_YEAR}>半年間</MenuItem>
+            <MenuItem value={SEARCH_PERIOD.YEAR}>1年間</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
+  )
+
+  if (posts.length === 0) {
+    return (
+      <Layout
+        title="記事ごとのアクセス数 - blog insights"
+        heading="記事ごとのアクセス数"
+      >
+        <div className={commonStyles.content}>
+          {searchConditionArea}
+          <div className={commonStyles.noContent}>
+            該当するデータはありません。
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout
       title="記事ごとのアクセス数 - blog insights"
       heading="記事ごとのアクセス数"
     >
       <div className={commonStyles.content}>
-        <Grid container>
-          <Grid item xs={12} sm={8}>
-            <FormControl variant="standard" className={styles.formArea}>
-              <InputLabel id="period-label">期間</InputLabel>
-              <Select
-                className={styles.periodSelect}
-                labelId="period-label"
-                label="期間"
-                value={period}
-                onChange={(e) => {
-                  onPeriodChange(e.target.value as SearchPeriod)
-                }}
-              >
-                <MenuItem value={SEARCH_PERIOD.WEEK}>1週間</MenuItem>
-                <MenuItem value={SEARCH_PERIOD.MONTH}>1ヶ月間</MenuItem>
-                <MenuItem value={SEARCH_PERIOD.HALF_YEAR}>半年間</MenuItem>
-                <MenuItem value={SEARCH_PERIOD.YEAR}>1年間</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+        {searchConditionArea}
         <PagingNav
           className={commonStyles.topPageNavContainer}
           selectedPage={page}
