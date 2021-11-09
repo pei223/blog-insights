@@ -1,6 +1,7 @@
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import {
   parseSiteInfoFromQueryParams,
   useSiteInfo,
@@ -84,7 +85,9 @@ const InsightsIndexPage = () => {
         siteInfo={siteInfo}
         keywordRankingList={keywordAccessInfoList}
         postAccessRankingList={postAccessList?.slice(0, 50)}
-        dailySiteAccessList={siteAccessList ? siteAccessList.slice(-14) : null}
+        dailySiteAccessList={
+          siteAccessList ? siteAccessList.slice(isMobile ? -14 : -30) : null
+        }
       />
     </>
   )

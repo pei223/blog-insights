@@ -1,4 +1,5 @@
 export const SEARCH_PERIOD = {
+  TODAY: 'today',
   WEEK: 'week',
   MONTH: 'month',
   HALF_YEAR: 'half_year',
@@ -23,6 +24,11 @@ export const convertSearchPeriodToCondition = (
   // NOTE なぜかWordpress.comのAPIのperiodをday以外にするとまともに取得できない
   // https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/stats/top-posts/
   switch (searchPeriod) {
+    case SEARCH_PERIOD.TODAY:
+      return {
+        period: 'day',
+        num: 1,
+      }
     case SEARCH_PERIOD.WEEK:
       return {
         period: 'day',

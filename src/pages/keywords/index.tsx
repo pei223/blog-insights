@@ -100,6 +100,7 @@ const KeywordsPage: React.FC<Props> = ({
 
   useEffect(() => {
     if (!data) return
+    setLoading(true)
     const newKeywords = KeywordService.getInstance().parseToKeywordInfo(data)
     setKeywords(sortKeywordsBy(newKeywords, viewTarget))
     setLoading(false)
