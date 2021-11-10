@@ -22,6 +22,7 @@ import PagingNav from '../../../blocks/common/PagingNav'
 import Layout from '../Layout'
 
 type Props = {
+  demoMode?: boolean
   loading: boolean
   posts: PostAccess[]
   page: number
@@ -33,6 +34,7 @@ type Props = {
 }
 
 const PostsTemplate: React.FC<Props> = ({
+  demoMode = false,
   loading,
   posts,
   page,
@@ -45,6 +47,7 @@ const PostsTemplate: React.FC<Props> = ({
   if (loading) {
     return (
       <Layout
+        demoMode={demoMode}
         title="記事ごとのアクセス数 - blog insights"
         heading="記事ごとのアクセス数"
       >
@@ -83,6 +86,7 @@ const PostsTemplate: React.FC<Props> = ({
   if (posts.length === 0) {
     return (
       <Layout
+        demoMode={demoMode}
         title="記事ごとのアクセス数 - blog insights"
         heading="記事ごとのアクセス数"
       >
@@ -98,6 +102,7 @@ const PostsTemplate: React.FC<Props> = ({
 
   return (
     <Layout
+      demoMode={demoMode}
       title="記事ごとのアクセス数 - blog insights"
       heading="記事ごとのアクセス数"
     >
@@ -115,6 +120,7 @@ const PostsTemplate: React.FC<Props> = ({
           {posts.map((post, i) => (
             <div key={post.title}>
               <PostAccessInfoRow
+                demoMode={demoMode}
                 rank={dataCountPerPage * page + i + 1}
                 postInfo={post}
               />

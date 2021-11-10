@@ -30,6 +30,7 @@ import PagingNav from '../../../blocks/common/PagingNav'
 import Layout from '../Layout'
 
 type Props = {
+  demoMode?: boolean
   loading: boolean
   heading?: ReactJSXElement
   keywords: KeywordAccess[]
@@ -46,6 +47,7 @@ type Props = {
 }
 
 const KeywordsTemplate: React.FC<Props> = ({
+  demoMode = false,
   loading,
   heading,
   keywords,
@@ -63,6 +65,7 @@ const KeywordsTemplate: React.FC<Props> = ({
   if (loading) {
     return (
       <Layout
+        demoMode={demoMode}
         title="キーワードごとのアクセス数 - blog insights"
         heading="キーワードごとのアクセス数"
       >
@@ -136,6 +139,7 @@ const KeywordsTemplate: React.FC<Props> = ({
   if (keywords.length === 0) {
     return (
       <Layout
+        demoMode={demoMode}
         title="キーワードごとのアクセス数 - blog insights"
         heading="キーワードごとのアクセス数"
       >
@@ -152,6 +156,7 @@ const KeywordsTemplate: React.FC<Props> = ({
 
   return (
     <Layout
+      demoMode={demoMode}
       title="キーワードごとのアクセス数 - blog insights"
       heading="キーワードごとのアクセス数"
     >
@@ -170,6 +175,7 @@ const KeywordsTemplate: React.FC<Props> = ({
           {keywords.map((keyword, i) => (
             <div key={keyword.keyword}>
               <KeywordInfoRow
+                demoMode={demoMode}
                 viewTarget={viewTarget}
                 rank={dataCountPerPage * page + i + 1}
                 keywordInfo={keyword}

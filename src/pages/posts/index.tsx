@@ -3,13 +3,17 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { useDemoPostAccessList } from '../../apis/wordpresscom/demoApi'
 import {
   isAuthError,
   usePostAccessList,
 } from '../../apis/wordpresscom/wordpressCom.api'
 import PostsTemplate from '../../components/templates/wordpresscom/posts_view/PostsTemplate'
 import { SearchPeriod, SEARCH_PERIOD } from '../../interfaces/commonInterfaces'
-import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
+import {
+  DEMO_USER_INFO,
+  UserInfo,
+} from '../../interfaces/wordpresscom/userInfo'
 import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import {
   clearUserInfoCache,
@@ -19,12 +23,15 @@ import {
 export const getServerSideProps = (
   context: GetServerSidePropsContext
 ): GetServerSidePropsResult<Props> => {
+  const demoMode =
+    context.query.demoMode && context.query.demoMode === 'true' ? true : false
   const searchPeriod = context.query.period
     ? (context.query.period as string).toUpperCase()
     : undefined
   const page = context.query.page ? Number(context.query.page) : 1
   return {
     props: {
+      demoMode: demoMode,
       searchPeriod:
         searchPeriod && SEARCH_PERIOD[searchPeriod]
           ? SEARCH_PERIOD[searchPeriod]
@@ -35,18 +42,23 @@ export const getServerSideProps = (
 }
 
 type Props = {
+  demoMode: boolean
   page: number
   searchPeriod: SearchPeriod
 }
 
 const DATA_COUNT_PER_PAGE = 20
 
-const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
+const PostsPage: React.FC<Props> = ({ demoMode, page, searchPeriod }) => {
   const router = useRouter()
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null)
 
-  const { data, error, loading } = usePostAccessList(userInfo, searchPeriod)
+  const { data, error, loading } = demoMode
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useDemoPostAccessList(userInfo, searchPeriod)
+    : // eslint-disable-next-line react-hooks/rules-of-hooks
+      usePostAccessList(userInfo, searchPeriod)
 
   if (error && isAuthError(error.response)) {
     clearUserInfoCache()
@@ -54,7 +66,7 @@ const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
   }
 
   useEffect(() => {
-    const _userInfo = readCachedUserInfo()
+    const _userInfo = demoMode ? DEMO_USER_INFO : readCachedUserInfo()
     if (!_userInfo) {
       clearUserInfoCache()
       router.replace(AUTH_ERROR_REDIRECT_URL)
@@ -66,13 +78,18 @@ const PostsPage: React.FC<Props> = ({ page, searchPeriod }) => {
   }, [])
 
   const onConditionChange = (page: number, period: SearchPeriod) => {
-    router?.push(`/posts?period=${period}&page=${page + 1}`)
+    router?.push(
+      `/posts?period=${period}&page=${page + 1}${
+        demoMode ? '&demoMode=true' : ''
+      }`
+    )
   }
 
   return (
     <>
       <NextSeo noindex={true} />
       <PostsTemplate
+        demoMode={demoMode}
         loading={loading}
         posts={
           data

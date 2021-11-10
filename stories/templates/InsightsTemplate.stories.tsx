@@ -7,7 +7,7 @@ storiesOf('templates/InsightsTemplate', module)
     <InsightsTemplate
       siteInfo={{
         name: '',
-        url: '',
+        URL: '',
         description: '',
       }}
       keywordRankingList={[

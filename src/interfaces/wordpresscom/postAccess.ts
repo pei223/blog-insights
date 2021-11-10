@@ -11,8 +11,10 @@ export type PostAccessRes = {
 
 export type SummarizedPostAccessRes = {
   date: string
+  period: string
   summary: {
     postviews: PostAccess[]
+    total_views: number
   }
 }
 
@@ -23,4 +25,6 @@ export type PostAccess = {
   title: string
   type: string
   views: number
+  children?: any
+  video_play?: boolean
 }

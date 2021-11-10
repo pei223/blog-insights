@@ -21,9 +21,10 @@ type Props = {
   children?: ReactNode
   title: string
   heading: string
+  demoMode?: boolean
 }
 
-const Layout = ({ children, title, heading }: Props) => {
+const Layout = ({ children, title, heading, demoMode = false }: Props) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const theme = createTheme({
@@ -74,10 +75,24 @@ const Layout = ({ children, title, heading }: Props) => {
         onClose={() => setSidebarOpen(false)}
       >
         <div className={styles.sidemenu}>
+          {demoMode && (
+            <>
+              <ListItem
+                className={styles.sidemenuLink}
+                button
+                onClick={() => router?.push(`/`)}
+              >
+                デモを終了する
+              </ListItem>
+              <Divider />
+            </>
+          )}
           <ListItem
             className={styles.sidemenuLink}
             button
-            onClick={() => router?.push('/insights')}
+            onClick={() =>
+              router?.push(`/insights${demoMode ? '?&demoMode=true' : ''}`)
+            }
           >
             TOP
           </ListItem>
@@ -87,7 +102,9 @@ const Layout = ({ children, title, heading }: Props) => {
             button
             onClick={() =>
               router?.push(
-                `/keywords?period=${SEARCH_PERIOD.WEEK}&target=${KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}&page=1`
+                `/keywords?period=${SEARCH_PERIOD.WEEK}&target=${
+                  KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS
+                }&page=1${demoMode ? '&demoMode=true' : ''}`
               )
             }
           >
@@ -97,7 +114,9 @@ const Layout = ({ children, title, heading }: Props) => {
           <ListItem
             className={styles.sidemenuLink}
             button
-            onClick={() => router?.push(`/posts`)}
+            onClick={() =>
+              router?.push(`/posts${demoMode ? '?&demoMode=true' : ''}`)
+            }
           >
             記事ごとのアクセス数
           </ListItem>

@@ -11,6 +11,7 @@ import SiteAccessGraphBlock from '../../../blocks/site_access/SiteAccessGraphBlo
 import Layout from '../Layout'
 
 type Props = {
+  demoMode?: boolean
   siteInfo: SiteInfo
   postAccessRankingList: PostAccess[] | null
   keywordRankingList: KeywordAccess[] | null
@@ -18,6 +19,7 @@ type Props = {
 }
 
 const InsightsTemplate = ({
+  demoMode = false,
   siteInfo,
   postAccessRankingList,
   keywordRankingList,
@@ -25,8 +27,11 @@ const InsightsTemplate = ({
 }: Props) => {
   return (
     <Layout
+      demoMode={demoMode}
       title="insights - blog insights"
-      heading={siteInfo ? `${siteInfo.name} insights` : '...'}
+      heading={
+        demoMode ? 'DEMO MODE' : siteInfo ? `${siteInfo.name} insights` : '...'
+      }
     >
       <div className={styles.statsGraphArea}>
         <SiteAccessGraphBlock
@@ -37,12 +42,14 @@ const InsightsTemplate = ({
       <Grid container spacing={2}>
         <Grid item sm={7} xs={12}>
           <PostAccessInfoBlock
+            demoMode={demoMode}
             className={styles.postAccessRankingArea}
             postInfoList={postAccessRankingList}
           />
         </Grid>
         <Grid item sm={5} xs={12}>
           <KeywordAccessInfoBlock
+            demoMode={demoMode}
             className={styles.keywordRankingArea}
             keywordInfoList={keywordRankingList}
           />

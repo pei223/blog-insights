@@ -1,5 +1,5 @@
 export type SiteInfo = {
   name: string
-  url: string
+  URL: string
   description: string
 }

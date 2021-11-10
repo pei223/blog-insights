@@ -13,7 +13,7 @@ export type SiteStats = {
   views_yesterday: number
 }
 
-type SiteAccessRawData = string | number[]
+type SiteAccessRawData = (string | number)[]
 
 export type SiteAccess = {
   date: Date

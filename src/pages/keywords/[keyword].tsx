@@ -3,6 +3,7 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { useDemoPostAccessList } from '../../apis/wordpresscom/demoApi'
 import {
   isAuthError,
   usePostAccessList,
@@ -15,7 +16,10 @@ import {
   KEYWORD_VIEW_TARGET,
   sortKeywordsBy,
 } from '../../interfaces/keywords/KeywordInfo'
-import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
+import {
+  DEMO_USER_INFO,
+  UserInfo,
+} from '../../interfaces/wordpresscom/userInfo'
 import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import KeywordService from '../../services/keywords/KeywordService'
 import {
@@ -27,6 +31,8 @@ import styles from '../../styles/pages/coOccurrencePage.module.css'
 export const getServerSideProps = (
   context: GetServerSidePropsContext
 ): GetServerSidePropsResult<Props> => {
+  const demoMode =
+    context.query.demoMode && context.query.demoMode === 'true' ? true : false
   const targetKeyword = context.query.keyword as string
   const viewTarget = context.query.target
     ? (context.query.target as string).toUpperCase()
@@ -41,6 +47,7 @@ export const getServerSideProps = (
       : false
   return {
     props: {
+      demoMode: demoMode,
       targetKeyword: targetKeyword,
       viewTarget:
         viewTarget && KEYWORD_VIEW_TARGET[viewTarget]
@@ -57,6 +64,7 @@ export const getServerSideProps = (
 }
 
 type Props = {
+  demoMode: boolean
   targetKeyword: string
   viewTarget: KeywordViewTarget
   page: number
@@ -67,6 +75,7 @@ type Props = {
 const DATA_COUNT_PER_PAGE = 20
 
 const CoOccurrenceKeywordsPage: React.FC<Props> = ({
+  demoMode,
   targetKeyword,
   viewTarget,
   page,
@@ -81,7 +90,11 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
     data,
     error,
     loading: apiLoading,
-  } = usePostAccessList(userInfo, searchPeriod)
+  } = demoMode
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useDemoPostAccessList(userInfo, searchPeriod)
+    : // eslint-disable-next-line react-hooks/rules-of-hooks
+      usePostAccessList(userInfo, searchPeriod)
 
   const [keywords, setKeywords] = useState<KeywordAccess[]>([])
   const [loading, setLoading] = useState(true)
@@ -92,7 +105,7 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    const _userInfo = readCachedUserInfo()
+    const _userInfo = demoMode ? DEMO_USER_INFO : readCachedUserInfo()
     if (!_userInfo) {
       clearUserInfoCache()
       router.replace(AUTH_ERROR_REDIRECT_URL)
@@ -125,7 +138,7 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
     router?.push(
       `/keywords/${targetKeyword}?target=${target}&period=${period}&page=${
         page + 1
-      }&excludeOnePost=${excludeOnePost}`
+      }&excludeOnePost=${excludeOnePost}${demoMode ? '&demoMode=true' : ''}`
     )
     setLoading(false)
   }
@@ -157,6 +170,7 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
     <>
       <NextSeo noindex={true} />
       <KeywordsTemplate
+        demoMode={demoMode}
         loading={loading || apiLoading}
         heading={headingComponent}
         keywords={filteredKeywords.slice(

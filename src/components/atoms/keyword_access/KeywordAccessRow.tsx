@@ -10,6 +10,7 @@ import { roundDigit } from '../../../utils/numberUtil'
 import commonStyles from '../InsightsRow.module.css'
 
 type Props = {
+  demoMode?: boolean
   width?: string
   rank: number
   keywordInfo: KeywordAccess
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const KeywordInfoRow = ({
+  demoMode = false,
   width = '100%',
   rank,
   keywordInfo,
@@ -41,7 +43,11 @@ const KeywordInfoRow = ({
       style={{
         width: width,
       }}
-      onClick={() => router.push(`/keywords/${keywordInfo.keyword}`)}
+      onClick={() =>
+        router.push(
+          `/keywords/${keywordInfo.keyword}${demoMode ? '?&demoMode=true' : ''}`
+        )
+      }
     >
       <div className={commonStyles.rank}>{rank}&#046;</div>
       <div className={commonStyles.textArea}>

@@ -4,6 +4,7 @@ import { PostAccess } from '../../../interfaces/wordpresscom/postAccess'
 import commonStyles from '../InsightsRow.module.css'
 
 type Props = {
+  demoMode?: boolean
   width?: string
   rank: number
   postInfo: PostAccess

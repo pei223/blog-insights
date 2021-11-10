@@ -14,11 +14,16 @@ import styles from '../../../styles/blocks/insightsBlock.module.css'
 import KeywordInfoRow from '../../atoms/keyword_access/KeywordAccessRow'
 
 type Props = {
+  demoMode?: boolean
   className?: string
   keywordInfoList: KeywordAccess[] | null
 }
 
-const KeywordInfoBlock = ({ className, keywordInfoList }: Props) => {
+const KeywordInfoBlock = ({
+  demoMode = false,
+  className,
+  keywordInfoList,
+}: Props) => {
   const router = useRouter()
   return (
     <Card className={className} style={{ position: 'relative' }}>
@@ -35,6 +40,7 @@ const KeywordInfoBlock = ({ className, keywordInfoList }: Props) => {
                   return (
                     <div key={index}>
                       <KeywordInfoRow
+                        demoMode={demoMode}
                         rank={index + 1}
                         keywordInfo={keywordInfo}
                       />
@@ -45,7 +51,11 @@ const KeywordInfoBlock = ({ className, keywordInfoList }: Props) => {
               </List>
             </div>
             <div className={styles.seeMoreArea}>
-              <Button onClick={() => router.push('/keywords')}>
+              <Button
+                onClick={() =>
+                  router.push(`/keywords${demoMode ? '?demoMode=true' : ''}`)
+                }
+              >
                 もっと見る
               </Button>
             </div>
