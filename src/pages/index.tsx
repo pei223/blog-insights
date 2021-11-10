@@ -1,16 +1,22 @@
-import { Fab, Grid, TextField } from '@mui/material'
+import { Button, Fab, Grid, TextField } from '@mui/material'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { generateWordpressComURL } from '../apis/wordpresscom/baseApi'
 import NologinLayout from '../components/templates/NologinLayout'
 import styles from '../styles/pages/index.module.css'
 
 const IndexPage = () => {
+  const router = useRouter()
   const [url, setUrl] = useState('')
 
   const transitWordpressCom = () => {
     if (url === '') return
     window.location.href = generateWordpressComURL(url)
+  }
+
+  const transitDemoPage = () => {
+    router.push('/insights?demoMode=true')
   }
 
   const onEnter = (event: KeyboardEvent) => {
@@ -48,6 +54,15 @@ const IndexPage = () => {
             </h2>
             <div className={styles.description}>
               直近2週間のアクセス数、キーワードごとのアクセス数、前日比アクセス数を一覧表示。
+            </div>
+            <div className={styles.demoButtonWrapper}>
+              <Button
+                variant="outlined"
+                className={styles.demoButton}
+                onClick={transitDemoPage}
+              >
+                デモモードで使ってみる
+              </Button>
             </div>
           </Grid>
         </Grid>

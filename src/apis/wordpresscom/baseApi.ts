@@ -13,5 +13,5 @@ export const generateWordpressComURL = (blogUrl: string): string => {
 }
 
 export const demoFetcher = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL + '/api/demo/',
+  baseURL: '/api/demo/',
 })

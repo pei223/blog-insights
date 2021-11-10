@@ -121,6 +121,14 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
             記事ごとのアクセス数
           </ListItem>
           <Divider />
+          <ListItem
+            className={styles.sidemenuLink}
+            button
+            onClick={() => router?.push(`/`)}
+          >
+            ログアウト
+          </ListItem>
+          <Divider />
         </div>
       </Drawer>
     </ThemeProvider>
