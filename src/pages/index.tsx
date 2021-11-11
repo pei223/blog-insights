@@ -126,13 +126,15 @@ const IndexPage = () => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
-            <Fab
-              variant="extended"
-              className={styles.loginButton}
-              onClick={transitWordpressCom}
-            >
-              Wordpress.comにログイン
-            </Fab>
+            <div className={styles.loginButtonWrapper}>
+              <Fab
+                variant="extended"
+                className={styles.loginButton}
+                onClick={transitWordpressCom}
+              >
+                Wordpress.comにログイン
+              </Fab>
+            </div>
 
             <p className={styles.alreadyLoginBlock}>
               <Link href="/insights" passHref>

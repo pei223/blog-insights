@@ -30,7 +30,7 @@ const InsightsTemplate = ({
       demoMode={demoMode}
       title="insights - blog insights"
       heading={
-        demoMode ? 'DEMO MODE' : siteInfo ? `${siteInfo.name} insights` : '...'
+        demoMode ? 'insights' : siteInfo ? `${siteInfo.name} insights` : '...'
       }
     >
       <div className={styles.statsGraphArea}>

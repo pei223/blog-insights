@@ -5,7 +5,9 @@ import KeywordsTemplate from '../../src/components/templates/wordpresscom/keywor
 import { SEARCH_PERIOD } from '../../src/interfaces/commonInterfaces'
 import { KEYWORD_VIEW_TARGET } from '../../src/interfaces/keywords/KeywordInfo'
 
-const dummy = () => {}
+const dummy = () => {
+  console.log('dummy')
+}
 
 storiesOf('templates/KeywordsTemplate', module)
   .add('default', () => (

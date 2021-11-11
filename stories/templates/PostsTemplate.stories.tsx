@@ -2,7 +2,9 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import PostsTemplate from '../../src/components/templates/wordpresscom/posts_view/PostsTemplate'
 
-const dummy = () => {}
+const dummy = () => {
+  console.log('dummy')
+}
 
 storiesOf('templates/PostsTemplate', module)
   .add('default', () => (

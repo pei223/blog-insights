@@ -35,12 +35,12 @@
 }
 
 .demoButtonWrapper {
+  margin-top: 30px;
   width: 100%;
   text-align: center;
 }
 .demoButton {
   padding: 10px 30px;
-  margin-top: 30px;
   color: #4527a0;
   font-size: 1.1rem;
   font-weight: 600;
@@ -61,8 +61,10 @@
   background-color: white;
 }
 
-.loginButton {
+.loginButtonWrapper {
   margin-top: 50px;
+}
+.loginButton {
   color: #4527a0;
   background-color: gainsboro;
   font-weight: 600;

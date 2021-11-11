@@ -69,7 +69,7 @@ export const useDemoPostAccessList = (
 
   const { data, isValidating, error } = useSWR<PostAccess[]>(
     userInfo &&
-      `/post_access?condition=${searchPeriod}?siteId=${userInfo.siteId}`,
+      `/post_access?condition=${searchPeriod}&siteId=${userInfo.siteId}`,
     fetcher,
     { dedupingInterval: 1000 * 60 }
   )
