@@ -1,5 +1,6 @@
 export const SEARCH_PERIOD = {
   TODAY: 'today',
+  YESTERDAY: 'yesterday',
   WEEK: 'week',
   MONTH: 'month',
   HALF_YEAR: 'half_year',
@@ -11,6 +12,7 @@ export type SearchPeriod = typeof SEARCH_PERIOD[keyof typeof SEARCH_PERIOD]
 export type SearchCondition = {
   period: 'day' | 'month' | 'year'
   num: number
+  date?: Date
 }
 
 /**
@@ -29,6 +31,15 @@ export const convertSearchPeriodToCondition = (
         period: 'day',
         num: 1,
       }
+    case SEARCH_PERIOD.YESTERDAY: {
+      const date = new Date()
+      date.setDate(date.getDate() - 1)
+      return {
+        period: 'day',
+        num: 1,
+        date: date,
+      }
+    }
     case SEARCH_PERIOD.WEEK:
       return {
         period: 'day',

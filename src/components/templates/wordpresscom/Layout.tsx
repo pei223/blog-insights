@@ -63,7 +63,7 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {`${demoMode && 'DEMO '}${heading}`}
+              {`${demoMode ? 'DEMO ' : ''}${heading}`}
             </Typography>
           </Toolbar>
         </AppBar>

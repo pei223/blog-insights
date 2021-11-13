@@ -73,6 +73,7 @@ const PostsTemplate: React.FC<Props> = ({
             }}
           >
             <MenuItem value={SEARCH_PERIOD.TODAY}>今日</MenuItem>
+            <MenuItem value={SEARCH_PERIOD.YESTERDAY}>昨日</MenuItem>
             <MenuItem value={SEARCH_PERIOD.WEEK}>1週間</MenuItem>
             <MenuItem value={SEARCH_PERIOD.MONTH}>1ヶ月間</MenuItem>
             <MenuItem value={SEARCH_PERIOD.HALF_YEAR}>半年間</MenuItem>

@@ -16,6 +16,7 @@ import {
 } from '../../interfaces/wordpresscom/siteAccess'
 import { SiteInfo } from '../../interfaces/wordpresscom/siteInfo'
 import { UserInfo } from '../../interfaces/wordpresscom/userInfo'
+import { toDateStr } from '../../utils/dateUtil'
 import { ApiHookResult } from '../common'
 import { wordpressComFetcher } from './baseApi'
 
@@ -110,7 +111,11 @@ export const usePostAccessList = (
   const { data, isValidating, error } = useSWR<PostAccess[]>(
     userInfo
       ? [
-          `/sites/${userInfo.siteId}/stats/top-posts?period=${condition.period}&num=${condition.num}&summarize=true`,
+          `/sites/${userInfo.siteId}/stats/top-posts?period=${
+            condition.period
+          }&num=${condition.num}&summarize=true${
+            condition.date ? `&date=${toDateStr(condition.date)}` : ''
+          }`,
           userInfo.accessToken,
         ]
       : null,
