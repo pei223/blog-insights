@@ -99,6 +99,7 @@ const PostsPage: React.FC<Props> = ({ demoMode, page, searchPeriod }) => {
               )
             : []
         }
+        totalViews={data ? data.reduce((sum, post) => sum + post.views, 0) : 0}
         page={page}
         maxPage={data ? Math.ceil(data.length / DATA_COUNT_PER_PAGE) : 0}
         dataCountPerPage={DATA_COUNT_PER_PAGE}

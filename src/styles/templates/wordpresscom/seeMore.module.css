@@ -39,6 +39,16 @@
   font-size: 1.5rem;
 }
 
+.accessCountRow {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.accessCount {
+  margin-right: 5px;
+  font-size: 2.5rem;
+}
+
 @media (max-width: 640px) {
   .content {
     padding: 0;

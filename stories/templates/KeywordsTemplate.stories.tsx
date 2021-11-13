@@ -12,6 +12,7 @@ const dummy = () => {
 storiesOf('templates/KeywordsTemplate', module)
   .add('default', () => (
     <KeywordsTemplate
+      totalViews={200}
       loading={false}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
       page={number('page', 0)}
@@ -59,6 +60,7 @@ storiesOf('templates/KeywordsTemplate', module)
   ))
   .add('with heading', () => (
     <KeywordsTemplate
+      totalViews={200}
       heading={<h1>キーワード一覧</h1>}
       loading={false}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
@@ -89,6 +91,7 @@ storiesOf('templates/KeywordsTemplate', module)
   ))
   .add('loading', () => (
     <KeywordsTemplate
+      totalViews={200}
       loading={true}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
       page={1}
@@ -105,6 +108,7 @@ storiesOf('templates/KeywordsTemplate', module)
   ))
   .add('no content', () => (
     <KeywordsTemplate
+      totalViews={200}
       loading={false}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}
       page={1}
@@ -121,6 +125,7 @@ storiesOf('templates/KeywordsTemplate', module)
   ))
   .add('no content with heading', () => (
     <KeywordsTemplate
+      totalViews={200}
       loading={false}
       heading={<h1>キーワード一覧</h1>}
       viewTarget={KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS}

@@ -25,6 +25,7 @@ type Props = {
   demoMode?: boolean
   loading: boolean
   posts: PostAccess[]
+  totalViews: number
   page: number
   maxPage: number
   dataCountPerPage: number
@@ -37,6 +38,7 @@ const PostsTemplate: React.FC<Props> = ({
   demoMode = false,
   loading,
   posts,
+  totalViews,
   page,
   maxPage,
   dataCountPerPage,
@@ -108,6 +110,10 @@ const PostsTemplate: React.FC<Props> = ({
       heading="記事ごとのアクセス数"
     >
       <div className={commonStyles.content}>
+        <p className={commonStyles.accessCountRow}>
+          <span className={commonStyles.accessCount}>{totalViews}</span>total
+          views
+        </p>
         {searchConditionArea}
         <PagingNav
           className={commonStyles.topPageNavContainer}

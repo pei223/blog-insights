@@ -165,7 +165,9 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
       と同時に出現するキーワード一覧
     </h1>
   )
-
+  console.log(
+    filteredKeywords.reduce((sum, keyword) => sum + keyword.totalAccess, 0)
+  )
   return (
     <>
       <NextSeo noindex={true} />
@@ -176,6 +178,10 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
         keywords={filteredKeywords.slice(
           page * DATA_COUNT_PER_PAGE,
           (page + 1) * DATA_COUNT_PER_PAGE
+        )}
+        totalViews={filteredKeywords.reduce(
+          (sum, keyword) => sum + keyword.totalAccess,
+          0
         )}
         viewTarget={viewTarget}
         page={page}
