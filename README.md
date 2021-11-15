@@ -4,7 +4,7 @@ Wordpress.com と連携してブログアクセス、キーワードアクセス
 
 URL -> https://blog-insights.vercel.app/
 
-
+<img src="https://user-images.githubusercontent.com/19645346/141778455-81a6e7c4-0c94-42df-aa66-d213c6ca25aa.gif" width="100%">
 
 ## 機能
 
@@ -16,17 +16,11 @@ URL -> https://blog-insights.vercel.app/
 - 共起キーワードのアクセス数
 - 記事アクセス数一覧ページ
 
-
-
-
-
 ## 開発用デプロイ
 
 ```
 npm run dev
 ```
-
-
 
 ## モックサーバーデプロイ
 
@@ -36,25 +30,17 @@ npm run dev
 npm run dev:mock
 ```
 
-
-
 ## 本番環境ビルド
 
 ```
 npm run build
 ```
 
-
-
 ## 本番環境デプロイ
 
 ```
 npm run start
 ```
-
-
-
-
 
 ## ESLint
 
@@ -65,10 +51,6 @@ npm run lint
 npm run lint:fix
 
 ```
-
-
-
-
 
 ## Setup Next.js with TypeScript
 
