@@ -162,10 +162,6 @@ const KeywordsPage: React.FC<Props> = ({
           page * DATA_COUNT_PER_PAGE,
           (page + 1) * DATA_COUNT_PER_PAGE
         )}
-        totalViews={filteredKeywords.reduce(
-          (sum, keyword) => sum + keyword.totalAccess,
-          0
-        )}
         viewTarget={viewTarget}
         page={page}
         maxPage={Math.ceil(filteredKeywords.length / DATA_COUNT_PER_PAGE)}

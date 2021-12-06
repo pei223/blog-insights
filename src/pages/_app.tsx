@@ -1,11 +1,32 @@
 import { DefaultSeo } from 'next-seo'
+import { useRouter } from 'next/router'
 import Script from 'next/script'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { AppContext } from '../stores/AppContext'
 import './styles.css'
 
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter()
+
+  const [pageLoading, setPageLoading] = useState(false)
+
+  useEffect(() => {
+    const handleStart = (url) => url !== router.asPath && setPageLoading(true)
+    const handleComplete = () => setPageLoading(false)
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleComplete)
+    router.events.on('routeChangeError', handleComplete)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleComplete)
+      router.events.off('routeChangeError', handleComplete)
+    }
+  })
+
   return (
-    <>
+    <AppContext.Provider value={{ pageLoading, setPageLoading }}>
       <DefaultSeo
         defaultTitle="blog insights"
         canonical="https://blog-insights.vercel.app"
@@ -44,6 +65,6 @@ export default function MyApp({ Component, pageProps }) {
       )}
 
       <Component {...pageProps} />
-    </>
+    </AppContext.Provider>
   )
 }

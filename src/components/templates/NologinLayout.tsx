@@ -1,12 +1,14 @@
 import {
   AppBar,
   createTheme,
+  LinearProgress,
   ThemeProvider,
   Toolbar,
   Typography,
 } from '@mui/material'
 import Head from 'next/head'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useContext, useEffect } from 'react'
+import { AppContext } from '../../stores/AppContext'
 
 type Props = {
   children?: ReactNode
@@ -14,6 +16,7 @@ type Props = {
 }
 
 const NologinLayout = ({ children, title }: Props) => {
+  const { pageLoading } = useContext(AppContext)
   const theme = createTheme({
     palette: {
       primary: {
@@ -44,6 +47,7 @@ const NologinLayout = ({ children, title }: Props) => {
             </Typography>
           </Toolbar>
         </AppBar>
+        {pageLoading && <LinearProgress />}
         <div>{children}</div>
       </div>
     </ThemeProvider>

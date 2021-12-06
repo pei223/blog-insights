@@ -5,6 +5,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  LinearProgress,
   ListItem,
   ThemeProvider,
   Toolbar,
@@ -12,9 +13,10 @@ import {
 } from '@mui/material'
 import Head from 'next/head'
 import router from 'next/router'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { SEARCH_PERIOD } from '../../../interfaces/commonInterfaces'
 import { KEYWORD_VIEW_TARGET } from '../../../interfaces/keywords/KeywordInfo'
+import { AppContext } from '../../../stores/AppContext'
 import styles from '../../../styles/layout.module.css'
 
 type Props = {
@@ -25,6 +27,7 @@ type Props = {
 }
 
 const Layout = ({ children, title, heading, demoMode = false }: Props) => {
+  const { pageLoading } = useContext(AppContext)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const theme = createTheme({
@@ -67,6 +70,11 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
             </Typography>
           </Toolbar>
         </AppBar>
+        {pageLoading ? (
+          <LinearProgress />
+        ) : (
+          <div style={{ height: '4px' }}></div>
+        )}
         <div className={styles.container}>{children}</div>
       </div>
       <Drawer

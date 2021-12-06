@@ -34,7 +34,6 @@ type Props = {
   loading: boolean
   heading?: ReactJSXElement
   keywords: KeywordAccess[]
-  totalViews: number
   page: number
   maxPage: number
   dataCountPerPage: number
@@ -52,7 +51,6 @@ const KeywordsTemplate: React.FC<Props> = ({
   loading,
   heading,
   keywords,
-  totalViews,
   page,
   maxPage,
   dataCountPerPage,
@@ -165,10 +163,6 @@ const KeywordsTemplate: React.FC<Props> = ({
     >
       <div className={commonStyles.content}>
         {heading}
-        <p className={commonStyles.accessCountRow}>
-          <span className={commonStyles.accessCount}>{totalViews}</span>total
-          views
-        </p>
         {searchConditionArea}
         <PagingNav
           className={commonStyles.topPageNavContainer}
