@@ -71,7 +71,19 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
           </Toolbar>
         </AppBar>
         {pageLoading ? (
-          <LinearProgress />
+          <>
+            <LinearProgress />
+            <div
+              style={{
+                zIndex: 9999,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+              }}
+            ></div>
+          </>
         ) : (
           <div style={{ height: '4px' }}></div>
         )}
