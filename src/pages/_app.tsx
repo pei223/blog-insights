@@ -2,6 +2,7 @@ import { DefaultSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import React, { useEffect, useState } from 'react'
+import NologinLayout from '../components/templates/NologinLayout'
 import { DEMO_USER_INFO, UserInfo } from '../interfaces/wordpresscom/userInfo'
 import {
   clearUserInfoCache,
@@ -97,7 +98,11 @@ export default function MyApp({ Component, pageProps }) {
         </>
       )}
       {/* TODO localstorageからのロードはほとんど時間かからないが、気になるほど遅ければロード画面追加 */}
-      {isFetchedUserInfo ? <Component {...pageProps} /> : <div>fetching</div>}
+      {isFetchedUserInfo ? (
+        <Component {...pageProps} />
+      ) : (
+        <NologinLayout title={'blog insights'} />
+      )}
     </AppContext.Provider>
   )
 }
