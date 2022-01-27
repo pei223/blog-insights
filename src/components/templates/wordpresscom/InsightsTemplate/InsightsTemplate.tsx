@@ -27,7 +27,6 @@ const InsightsTemplate = ({
 }: Props) => {
   return (
     <Layout
-      demoMode={demoMode}
       title="insights - blog insights"
       heading={
         demoMode ? 'insights' : siteInfo ? `${siteInfo.name} insights` : '...'

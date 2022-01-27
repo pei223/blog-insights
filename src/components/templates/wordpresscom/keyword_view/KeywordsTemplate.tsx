@@ -65,7 +65,6 @@ const KeywordsTemplate: React.FC<Props> = ({
   if (loading) {
     return (
       <Layout
-        demoMode={demoMode}
         title="キーワードごとのアクセス数 - blog insights"
         heading="キーワードごとのアクセス数"
       >
@@ -140,7 +139,6 @@ const KeywordsTemplate: React.FC<Props> = ({
   if (keywords.length === 0) {
     return (
       <Layout
-        demoMode={demoMode}
         title="キーワードごとのアクセス数 - blog insights"
         heading="キーワードごとのアクセス数"
       >
@@ -157,7 +155,6 @@ const KeywordsTemplate: React.FC<Props> = ({
 
   return (
     <Layout
-      demoMode={demoMode}
       title="キーワードごとのアクセス数 - blog insights"
       heading="キーワードごとのアクセス数"
     >

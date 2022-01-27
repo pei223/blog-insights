@@ -49,7 +49,6 @@ const PostsTemplate: React.FC<Props> = ({
   if (loading) {
     return (
       <Layout
-        demoMode={demoMode}
         title="記事ごとのアクセス数 - blog insights"
         heading="記事ごとのアクセス数"
       >
@@ -89,7 +88,6 @@ const PostsTemplate: React.FC<Props> = ({
   if (posts.length === 0) {
     return (
       <Layout
-        demoMode={demoMode}
         title="記事ごとのアクセス数 - blog insights"
         heading="記事ごとのアクセス数"
       >
@@ -105,7 +103,6 @@ const PostsTemplate: React.FC<Props> = ({
 
   return (
     <Layout
-      demoMode={demoMode}
       title="記事ごとのアクセス数 - blog insights"
       heading="記事ごとのアクセス数"
     >

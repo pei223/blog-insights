@@ -1,7 +1,6 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   useDemoDailySiteAccess,
@@ -19,37 +18,18 @@ import InsightsTemplate from '../../components/templates/wordpresscom/InsightsTe
 import { SEARCH_PERIOD } from '../../interfaces/commonInterfaces'
 import { KeywordAccess } from '../../interfaces/keywords/KeywordInfo'
 import { PostAccess } from '../../interfaces/wordpresscom/postAccess'
-import {
-  DEMO_USER_INFO,
-  UserInfo,
-} from '../../interfaces/wordpresscom/userInfo'
 import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import KeywordService from '../../services/keywords/KeywordService'
 import {
   clearUserInfoCache,
-  readCachedUserInfo,
   saveUserInfoCache,
 } from '../../services/storages/wordPressComStorage'
+import { AppContext } from '../../stores/AppContext'
 
-export const getServerSideProps = (
-  context: GetServerSidePropsContext
-): GetServerSidePropsResult<Props> => {
-  const demoMode =
-    context.query.demoMode && context.query.demoMode === 'true' ? true : false
-  return {
-    props: {
-      demoMode: demoMode,
-    },
-  }
-}
-
-type Props = {
-  demoMode: boolean
-}
-
-const InsightsIndexPage: React.FC<Props> = ({ demoMode }) => {
+const InsightsIndexPage: React.FC = () => {
   const router = useRouter()
-  const [userInfo, setUserInfo] = useState<UserInfo>(null)
+
+  const { userInfo, demoMode, setUserInfo } = useContext(AppContext)
 
   const [keywordAccessInfoList, setKeywordAccessInfoList] =
     useState<KeywordAccess[]>(null)
@@ -70,6 +50,15 @@ const InsightsIndexPage: React.FC<Props> = ({ demoMode }) => {
     : // eslint-disable-next-line react-hooks/rules-of-hooks
       useDailySiteAccess(userInfo)
 
+  if (siteInfoError || siteAccessError || postAccessError) {
+    const error = siteInfoError || siteAccessError || postAccessError
+    if (isAuthError(error.response)) {
+      clearUserInfoCache()
+      setUserInfo(null)
+      router.replace(AUTH_ERROR_REDIRECT_URL)
+    }
+  }
+
   const calcKeywordInfoAsync = async (
     postInfoList: PostAccess[]
   ): Promise<KeywordAccess[]> => {
@@ -79,19 +68,18 @@ const InsightsIndexPage: React.FC<Props> = ({ demoMode }) => {
   }
 
   useEffect(() => {
-    let userInfo = demoMode ? DEMO_USER_INFO : readCachedUserInfo()
     if (userInfo) {
-      setUserInfo(userInfo)
       return
     }
-    userInfo = parseSiteInfoFromQueryParams(window.location.href)
-    if (!userInfo) {
+    const newUserInfo = parseSiteInfoFromQueryParams(window.location.href)
+    if (!newUserInfo) {
       clearUserInfoCache()
+      setUserInfo(null)
       router.replace(AUTH_ERROR_REDIRECT_URL)
       return
     }
-    saveUserInfoCache(userInfo)
-    setUserInfo(userInfo)
+    saveUserInfoCache(newUserInfo)
+    setUserInfo(newUserInfo)
     // 初回マウントのみの処理のため
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -102,14 +90,6 @@ const InsightsIndexPage: React.FC<Props> = ({ demoMode }) => {
       setKeywordAccessInfoList(keywords)
     })
   }, [postAccessList])
-
-  if (siteInfoError || siteAccessError || postAccessError) {
-    const error = siteInfoError || siteAccessError || postAccessError
-    if (isAuthError(error.response)) {
-      clearUserInfoCache()
-      router.replace(AUTH_ERROR_REDIRECT_URL)
-    }
-  }
 
   return (
     <>

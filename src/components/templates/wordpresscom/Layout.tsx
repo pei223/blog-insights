@@ -23,11 +23,10 @@ type Props = {
   children?: ReactNode
   title: string
   heading: string
-  demoMode?: boolean
 }
 
-const Layout = ({ children, title, heading, demoMode = false }: Props) => {
-  const { pageLoading } = useContext(AppContext)
+const Layout = ({ children, title, heading }: Props) => {
+  const { pageLoading, demoMode } = useContext(AppContext)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const theme = createTheme({
@@ -42,6 +41,14 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
     const jssStyles = document.querySelector('#jss-server-side')
     jssStyles?.parentElement?.removeChild(jssStyles)
   }, [])
+
+  const withDemoMode = (query) => {
+    if (demoMode) {
+      query['demoMode'] = true
+    }
+    return query
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -111,7 +118,10 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
             className={styles.sidemenuLink}
             button
             onClick={() =>
-              router?.push(`/insights${demoMode ? '?&demoMode=true' : ''}`)
+              router?.push({
+                pathname: '/insights',
+                query: withDemoMode({}),
+              })
             }
           >
             TOP
@@ -121,11 +131,14 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
             className={styles.sidemenuLink}
             button
             onClick={() =>
-              router?.push(
-                `/keywords?period=${SEARCH_PERIOD.WEEK}&target=${
-                  KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS
-                }&page=1${demoMode ? '&demoMode=true' : ''}`
-              )
+              router?.push({
+                pathname: `/keywords`,
+                query: withDemoMode({
+                  period: SEARCH_PERIOD.WEEK,
+                  target: KEYWORD_VIEW_TARGET.AVERAGE_POST_ACCESS,
+                  page: 1,
+                }),
+              })
             }
           >
             キーワードごとのアクセス数
@@ -135,20 +148,27 @@ const Layout = ({ children, title, heading, demoMode = false }: Props) => {
             className={styles.sidemenuLink}
             button
             onClick={() =>
-              router?.push(`/posts${demoMode ? '?&demoMode=true' : ''}`)
+              router?.push({
+                pathname: '/posts',
+                query: withDemoMode({}),
+              })
             }
           >
             記事ごとのアクセス数
           </ListItem>
           <Divider />
-          <ListItem
-            className={styles.sidemenuLink}
-            button
-            onClick={() => router?.push(`/`)}
-          >
-            ログアウト
-          </ListItem>
-          <Divider />
+          {!demoMode && (
+            <>
+              <ListItem
+                className={styles.sidemenuLink}
+                button
+                onClick={() => router?.push(`/`)}
+              >
+                ログアウト
+              </ListItem>
+              <Divider />
+            </>
+          )}
         </div>
       </Drawer>
     </ThemeProvider>

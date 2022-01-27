@@ -8,13 +8,14 @@ import {
 } from '@mui/material'
 import { NextSeo } from 'next-seo'
 import router from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { generateWordpressComURL } from '../apis/wordpresscom/baseApi'
 import NologinLayout from '../components/templates/NologinLayout'
-import { readCachedUserInfo } from '../services/storages/wordPressComStorage'
+import { AppContext } from '../stores/AppContext'
 import styles from '../styles/pages/login.module.css'
 
 const LoginPage = () => {
+  const { userInfo } = useContext(AppContext)
   const [url, setUrl] = useState('')
 
   const transitWordpressCom = () => {
@@ -30,7 +31,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     window.addEventListener('keydown', onEnter)
-    const userInfo = readCachedUserInfo()
     if (userInfo) {
       router.push('/insights')
     }

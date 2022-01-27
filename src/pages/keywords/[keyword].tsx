@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useState } from 'react'
 import { useDemoPostAccessList } from '../../apis/wordpresscom/demoApi'
 import {
@@ -16,23 +16,15 @@ import {
   KEYWORD_VIEW_TARGET,
   sortKeywordsBy,
 } from '../../interfaces/keywords/KeywordInfo'
-import {
-  DEMO_USER_INFO,
-  UserInfo,
-} from '../../interfaces/wordpresscom/userInfo'
 import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import KeywordService from '../../services/keywords/KeywordService'
-import {
-  clearUserInfoCache,
-  readCachedUserInfo,
-} from '../../services/storages/wordPressComStorage'
+import { clearUserInfoCache } from '../../services/storages/wordPressComStorage'
+import { AppContext } from '../../stores/AppContext'
 import styles from '../../styles/pages/coOccurrencePage.module.css'
 
 export const getServerSideProps = (
   context: GetServerSidePropsContext
 ): GetServerSidePropsResult<Props> => {
-  const demoMode =
-    context.query.demoMode && context.query.demoMode === 'true' ? true : false
   const targetKeyword = context.query.keyword as string
   const viewTarget = context.query.target
     ? (context.query.target as string).toUpperCase()
@@ -47,7 +39,6 @@ export const getServerSideProps = (
       : false
   return {
     props: {
-      demoMode: demoMode,
       targetKeyword: targetKeyword,
       viewTarget:
         viewTarget && KEYWORD_VIEW_TARGET[viewTarget]
@@ -64,7 +55,6 @@ export const getServerSideProps = (
 }
 
 type Props = {
-  demoMode: boolean
   targetKeyword: string
   viewTarget: KeywordViewTarget
   page: number
@@ -75,7 +65,6 @@ type Props = {
 const DATA_COUNT_PER_PAGE = 20
 
 const CoOccurrenceKeywordsPage: React.FC<Props> = ({
-  demoMode,
   targetKeyword,
   viewTarget,
   page,
@@ -83,8 +72,7 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
   excludeOnePost,
 }) => {
   const router = useRouter()
-
-  const [userInfo, setUserInfo] = useState<UserInfo>(null)
+  const { userInfo, demoMode, setUserInfo } = useContext(AppContext)
 
   const {
     data,
@@ -101,32 +89,20 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
 
   if (error && isAuthError(error.response)) {
     clearUserInfoCache()
+    setUserInfo(null)
     router.replace(AUTH_ERROR_REDIRECT_URL)
   }
 
   useEffect(() => {
-    const _userInfo = demoMode ? DEMO_USER_INFO : readCachedUserInfo()
-    if (!_userInfo) {
-      clearUserInfoCache()
-      router.replace(AUTH_ERROR_REDIRECT_URL)
-      return
-    }
-    setUserInfo(_userInfo)
-    // 初回マウントのみの処理のため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
     if (!data) return
+    setLoading(true)
     const newKeywords = KeywordService.getInstance().parseCoOccurrenceKeywords(
       targetKeyword,
       data
     )
     setKeywords(sortKeywordsBy(newKeywords, viewTarget))
     setLoading(false)
-    // APIからのデータ変更時のみ処理するため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [targetKeyword, data])
+  }, [targetKeyword, data, viewTarget])
 
   const onConditionChange = (
     period: SearchPeriod,
@@ -142,18 +118,6 @@ const CoOccurrenceKeywordsPage: React.FC<Props> = ({
     )
     setLoading(false)
   }
-
-  useEffect(() => {
-    setLoading(false)
-  }, [viewTarget, excludeOnePost, searchPeriod])
-
-  useEffect(() => {
-    setLoading(true)
-    setKeywords(sortKeywordsBy(keywords, viewTarget))
-    setLoading(false)
-    // 表示対象、ページ変更検知のため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewTarget])
 
   const filteredKeywords = excludeOnePost
     ? keywords.filter((keyword) => keyword.postCount > 1)

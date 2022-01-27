@@ -1,8 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDemoPostAccessList } from '../../apis/wordpresscom/demoApi'
 import {
   isAuthError,
@@ -16,22 +15,14 @@ import {
   KEYWORD_VIEW_TARGET,
   sortKeywordsBy,
 } from '../../interfaces/keywords/KeywordInfo'
-import {
-  DEMO_USER_INFO,
-  UserInfo,
-} from '../../interfaces/wordpresscom/userInfo'
 import { AUTH_ERROR_REDIRECT_URL } from '../../services/Consts'
 import KeywordService from '../../services/keywords/KeywordService'
-import {
-  clearUserInfoCache,
-  readCachedUserInfo,
-} from '../../services/storages/wordPressComStorage'
+import { clearUserInfoCache } from '../../services/storages/wordPressComStorage'
+import { AppContext } from '../../stores/AppContext'
 
 export const getServerSideProps = (
   context: GetServerSidePropsContext
 ): GetServerSidePropsResult<Props> => {
-  const demoMode =
-    context.query.demoMode && context.query.demoMode === 'true' ? true : false
   const viewTarget = context.query.target
     ? (context.query.target as string).toUpperCase()
     : undefined
@@ -45,7 +36,6 @@ export const getServerSideProps = (
       : false
   return {
     props: {
-      demoMode: demoMode,
       viewTarget:
         viewTarget && KEYWORD_VIEW_TARGET[viewTarget]
           ? KEYWORD_VIEW_TARGET[viewTarget]
@@ -61,7 +51,6 @@ export const getServerSideProps = (
 }
 
 type Props = {
-  demoMode: boolean
   viewTarget: KeywordViewTarget
   page: number
   searchPeriod: SearchPeriod
@@ -71,15 +60,13 @@ type Props = {
 const DATA_COUNT_PER_PAGE = 20
 
 const KeywordsPage: React.FC<Props> = ({
-  demoMode,
   viewTarget,
   page,
   searchPeriod,
   excludeOnePost,
 }) => {
   const router = useRouter()
-
-  const [userInfo, setUserInfo] = useState<UserInfo>(null)
+  const { userInfo, demoMode, setUserInfo } = useContext(AppContext)
 
   const {
     data,
@@ -96,30 +83,18 @@ const KeywordsPage: React.FC<Props> = ({
 
   if (error && isAuthError(error.response)) {
     clearUserInfoCache()
+    setUserInfo(null)
     router.replace(AUTH_ERROR_REDIRECT_URL)
   }
 
   useEffect(() => {
-    const _userInfo = demoMode ? DEMO_USER_INFO : readCachedUserInfo()
-    if (!_userInfo) {
-      clearUserInfoCache()
-      router.replace(AUTH_ERROR_REDIRECT_URL)
-      return
-    }
-    setUserInfo(_userInfo)
-    // 初回マウントのみの処理のため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
     if (!data) return
     setLoading(true)
+    // TODO 1度Parseされたキーワードは保持して再計算不要にしたい
     const newKeywords = KeywordService.getInstance().parseToKeywordInfo(data)
     setKeywords(sortKeywordsBy(newKeywords, viewTarget))
     setLoading(false)
-    // APIからのデータ変更時のみ処理するため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data, viewTarget])
 
   const onConditionChange = (
     period: SearchPeriod,
@@ -135,18 +110,6 @@ const KeywordsPage: React.FC<Props> = ({
     )
     setLoading(false)
   }
-
-  useEffect(() => {
-    setLoading(false)
-  }, [viewTarget, excludeOnePost, searchPeriod])
-
-  useEffect(() => {
-    setLoading(true)
-    setKeywords(sortKeywordsBy(keywords, viewTarget))
-    setLoading(false)
-    // 表示対象、ページ変更検知のため
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewTarget])
 
   const filteredKeywords = excludeOnePost
     ? keywords.filter((keyword) => keyword.postCount > 1)
