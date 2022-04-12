@@ -97,7 +97,7 @@ const Layout = ({ children, title, heading }: Props) => {
         <div className={styles.container}>{children}</div>
       </div>
       <Drawer
-        anchor="left"
+        anchor="lefta"
         open={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
       >
